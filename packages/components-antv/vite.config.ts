@@ -1,15 +1,15 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import dts from 'vite-plugin-dts';
-import  { resolve } from 'path';
+import dts from 'unplugin-dts/vite'
+import { resolve } from 'path';
 
 export default defineConfig({
   build: {
     cssCodeSplit: true,
     lib: {
-      entry: resolve(__dirname, 'main.js'),
+      entry: resolve(__dirname, 'main.ts'),
       name: 'CommethComponentsAntv',
-      // 将添加适当的扩展名后缀
+      formats: ['es'],
       fileName: 'index',
     },
     rollupOptions: {
@@ -27,19 +27,20 @@ export default defineConfig({
             entryFileNames: "[name].js",
             exports: "named",
             preserveModules: true,
-            preserveModulesRoot: "packages",
+            preserveModulesRoot: ".",
             dir: "./dist/es",
         },
-        {
-            format: "cjs",
-            entryFileNames: "[name].js",
-            exports: "named",
-            preserveModules: true,
-            preserveModulesRoot: "packages",
-            dir: "./dist/lib",
-        },
+        // {
+        //     format: "cjs",
+        //     entryFileNames: "[name].js",
+        //     exports: "named",
+        //     preserveModules: true,
+        //     preserveModulesRoot: "packages",
+        //     dir: "./dist/lib",
+        // },
      ],
     }
   },
-  plugins: [vue(),dts()]
+  plugins: [vue(), dts({ tsconfigPath: './tsconfig.prod.json', processor: 'vue' })]
 });
+ 
