@@ -1,0 +1,12 @@
+{
+  "name": "@commeth/utils",
+  "version": "0.0.1",
+  "module": "./dist/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "publish": "npm publish --access public"
+  }
+}
