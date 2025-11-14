@@ -1,5 +1,8 @@
 {
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+  },
   "include": [
     "**/*.vue",
     "**/*.d.ts",
@@ -7,6 +10,6 @@
   ],
   "exclude": [
     "node_modules",
-    "./vite.config.ts",
+    "./vite.config.ts"
   ]
 }
