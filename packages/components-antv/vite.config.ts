@@ -2,18 +2,20 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import dts from "unplugin-dts/vite";
 import { resolve } from "path";
+import UnoCSS from "unocss/vite";
+import { libInjectCss } from "vite-plugin-lib-inject-css";
 
 export default defineConfig({
   build: {
     cssCodeSplit: true,
     lib: {
-      entry: resolve(__dirname, "main.ts"),
+      entry: resolve(__dirname, "index.ts"),
       name: "CommethComponentsAntv",
       formats: ["es"],
       fileName: "index",
     },
     rollupOptions: {
-      external: ["vue"],
+      external: ["vue", "virtual:uno.css"],
       output: [
         {
           format: "es",
@@ -28,10 +30,12 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    UnoCSS({ mode: "vue-scoped" }),
     dts({
       tsconfigPath: "./tsconfig.prod.json",
       processor: "vue",
       outDirs: ["./dist/es"],
     }),
+    libInjectCss(),
   ],
 });

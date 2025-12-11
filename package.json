@@ -14,7 +14,10 @@
     "lint:init": "oxlint --init"
   },
   "dependencies": {
+    "@commeth/components-antv": "workspace:^",
     "@commeth/utils": "workspace:^",
+    "@iconify/vue": "^5.0.0",
+    "@vueuse/core": "^14.0.0",
     "vue": "^3.5.24"
   },
   "devDependencies": {
@@ -25,8 +28,10 @@
     "oxfmt": "^0.13.0",
     "oxlint": "^1.28.0",
     "typescript": "~5.9.3",
+    "unocss": "^66.5.6",
     "unplugin-dts": "1.0.0-beta.6",
     "vite": "^7.2.2",
+    "vite-bundle-analyzer": "^1.2.3",
     "vue-tsc": "^3.1.3"
   }
 }
