@@ -15,7 +15,7 @@ export default defineConfig({
       fileName: "index",
     },
     rollupOptions: {
-      external: ["vue", "virtual:uno.css"],
+      external: ["vue", "virtual:uno.css", "ant-design-vue"],
       output: [
         {
           format: "es",
