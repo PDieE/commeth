@@ -1,6 +1,6 @@
 {
   "name": "@commeth/components-antv",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "module": "./dist/es/index.js",
   "files": [
     "dist"

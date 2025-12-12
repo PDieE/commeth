@@ -15,18 +15,13 @@
 import { computed } from "vue";
 import { Button, Empty, Result, ResultProps, Spin } from "ant-design-vue";
 
+import { SimpleWrapProps } from "./types";
+
 const {
   loading = false,
   error = false,
   empty = false,
-} = defineProps<{
-  /** 加载状态, 优先级最高 */
-  loading?: boolean;
-  /** 错误状态, 优先级次于 `loading` */
-  error?: boolean | (ResultProps & { class?: unknown });
-  /** 空状态, 优先级最低 */
-  empty?: boolean;
-}>();
+} = defineProps<SimpleWrapProps>();
 const emits = defineEmits<{
   /** 重试 */
   retry: [];
