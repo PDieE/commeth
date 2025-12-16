@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "fnm exec -- vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "build-packages": "pnpm -r run build",
@@ -14,14 +14,21 @@
     "format:check": "prettier . --check"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@commeth/components-antv": "workspace:^",
+    "@commeth/hooks": "workspace:^",
     "@commeth/utils": "workspace:^",
     "@iconify/vue": "^5.0.0",
     "@vueuse/core": "^14.1.0",
+    "es-toolkit": "^1.43.0",
     "vue": "^3.5.25"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/amap-js-api": "^1.4.16",
+    "@types/amap-js-api-city-search": "^1.4.3",
+    "@types/amap-js-api-geocoder": "^1.4.4",
+    "@types/amap-js-api-place-search": "^1.4.4",
     "@types/node": "^24.10.3",
     "@vitejs/plugin-vue": "^6.0.2",
     "@vue/language-core": "^3.1.8",

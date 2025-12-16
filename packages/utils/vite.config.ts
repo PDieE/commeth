@@ -5,14 +5,29 @@ import { resolve } from "path";
 export default defineConfig({
   build: {
     lib: {
-      entry: resolve(__dirname, "index.js"),
+      entry: resolve(__dirname, "index.ts"),
       name: "CommethUtils",
-      // 将添加适当的扩展名后缀
+      formats: ["es"],
       fileName: "index",
     },
     rollupOptions: {
-      external: ["vue"],
+      external: ["vue", "@amap/amap-jsapi-loader"],
+      output: [
+        {
+          format: "es",
+          entryFileNames: "[name].js",
+          exports: "named",
+          preserveModules: true,
+          preserveModulesRoot: ".",
+          dir: "./dist/es",
+        },
+      ],
     },
   },
-  plugins: [dts()],
+  plugins: [
+    dts({
+      tsconfigPath: "./tsconfig.prod.json",
+      outDirs: ["./dist/es"],
+    }),
+  ],
 });

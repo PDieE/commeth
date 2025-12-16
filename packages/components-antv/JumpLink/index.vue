@@ -12,7 +12,6 @@
 <script setup lang="ts">
 import { ref, shallowRef } from 'vue';
 import { Button, Tooltip } from 'ant-design-vue';
-// import Icon from '@/components/Icon/Icon.vue';
 import { Icon } from "@iconify/vue";
 import { useResizeObserver } from '@vueuse/core';
 

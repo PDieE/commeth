@@ -1,30 +1,17 @@
 import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
 import dts from "unplugin-dts/vite";
 import { resolve } from "path";
-import UnoCSS from "unocss/vite";
-import { libInjectCss } from "vite-plugin-lib-inject-css";
 
 export default defineConfig({
   build: {
-    cssCodeSplit: true,
     lib: {
       entry: resolve(__dirname, "index.ts"),
-      name: "CommethComponentsAntv",
+      name: "CommethHooks",
       formats: ["es"],
       fileName: "index",
     },
     rollupOptions: {
-      external: [
-        "vue",
-        "virtual:uno.css",
-        "ant-design-vue",
-        "@iconify/vue",
-        "@vueuse/core",
-        "es-toolkit",
-        "@commeth/utils",
-        "@commeth/hooks",
-      ],
+      external: ["vue", "@vueuse/core"],
       output: [
         {
           format: "es",
@@ -38,13 +25,9 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue(),
-    UnoCSS({ mode: "vue-scoped" }),
     dts({
       tsconfigPath: "./tsconfig.prod.json",
-      processor: "vue",
       outDirs: ["./dist/es"],
     }),
-    libInjectCss(),
   ],
 });

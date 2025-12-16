@@ -8,9 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@amap/amap-jsapi-loader':
+        specifier: ^1.0.1
+        version: 1.0.1
       '@commeth/components-antv':
         specifier: workspace:^
         version: link:packages/components-antv
+      '@commeth/hooks':
+        specifier: workspace:^
+        version: link:packages/hooks
       '@commeth/utils':
         specifier: workspace:^
         version: link:packages/utils
@@ -20,6 +26,9 @@ importers:
       '@vueuse/core':
         specifier: ^14.1.0
         version: 14.1.0(vue@3.5.25(typescript@5.9.3))
+      es-toolkit:
+        specifier: ^1.43.0
+        version: 1.43.0
       vue:
         specifier: ^3.5.25
         version: 3.5.25(typescript@5.9.3)
@@ -27,6 +36,18 @@ importers:
       '@eslint/js':
         specifier: ^9.39.1
         version: 9.39.1
+      '@types/amap-js-api':
+        specifier: ^1.4.16
+        version: 1.4.16
+      '@types/amap-js-api-city-search':
+        specifier: ^1.4.3
+        version: 1.4.3
+      '@types/amap-js-api-geocoder':
+        specifier: ^1.4.4
+        version: 1.4.4
+      '@types/amap-js-api-place-search':
+        specifier: ^1.4.4
+        version: 1.4.4
       '@types/node':
         specifier: ^24.10.3
         version: 24.10.3
@@ -89,9 +110,14 @@ importers:
         specifier: ^2.2.2
         version: 2.2.2(vite@7.2.7(@types/node@25.0.1)(jiti@2.6.1))
 
+  packages/hooks: {}
+
   packages/utils: {}
 
 packages:
+
+  '@amap/amap-jsapi-loader@1.0.1':
+    resolution: {integrity: sha512-nPyLKt7Ow/ThHLkSvn2etQlUzqxmTVgK7bIgwdBRTg2HK5668oN7xVxkaiRe3YZEzGzfV2XgH5Jmu2T73ljejw==}
 
   '@ant-design/colors@6.0.0':
     resolution: {integrity: sha512-qAZRvPzfdWHtfameEGP2Qvuf838NhergR35o+EuVyB5XvSA98xod5r4utvi4TJ3ywmevm290g9nsCG5MryrdWQ==}
@@ -636,6 +662,18 @@ packages:
   '@simonwep/pickr@1.8.2':
     resolution: {integrity: sha512-/l5w8BIkrpP6n1xsetx9MWPWlU6OblN5YgZZphxan0Tq4BByTCETL6lyIeY8lagalS2Nbt4F2W034KHLIiunKA==}
 
+  '@types/amap-js-api-city-search@1.4.3':
+    resolution: {integrity: sha512-15B7vm3vHWmlbF4th7Nzcwp87Fu2+A6LkuIo+wNnNx8sVmspBMY2RIhBuIWVAC1yAinEQ5J2CdyekqzWwEUvwA==}
+
+  '@types/amap-js-api-geocoder@1.4.4':
+    resolution: {integrity: sha512-BH3bAHxiw3uZTAsHCRGB337TOggSYB4u0pVLTqrM5/ZX4Zu9o+SbAa8tLkQ9o+NJp35Q7PxCLX6jBaTcdhnCJg==}
+
+  '@types/amap-js-api-place-search@1.4.4':
+    resolution: {integrity: sha512-k+zWTEOLnjWGfwYmOWJv9zgZwVq+fMnpRrCTcPtWTgocDIJ/YWeWckdVl9+9zFN8Jxm47GReck/KO0qIuJv5wQ==}
+
+  '@types/amap-js-api@1.4.16':
+    resolution: {integrity: sha512-gfcEswuU4GNRdGAh74FhxfLlU6qxmVIJYPf3HV0uKucCWQ9iSr8TonDhqBvHVmmQEY60K+UAeIh0YLwKo/jpFQ==}
+
   '@types/argparse@1.0.38':
     resolution: {integrity: sha512-ebDJ9b0e702Yr7pWgB0jzm+CX4Srzz8RcXtLJDJB+BSccqMa36uyH/zUsSYao5+BD1ytv3k3rPYCq4mAE1hsXA==}
 
@@ -1073,6 +1111,9 @@ packages:
   entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
     engines: {node: '>=0.12'}
+
+  es-toolkit@1.43.0:
+    resolution: {integrity: sha512-SKCT8AsWvYzBBuUqMk4NPwFlSdqLpJwmy6AP322ERn8W2YLIB6JBXnwMI2Qsh2gfphT3q7EKAxKb23cvFHFwKA==}
 
   esbuild@0.25.12:
     resolution: {integrity: sha512-bbPBYYrtZbkt6Os6FiTLCTFxvq4tt3JKall1vRwshA3fdVztsLAatFaZobhkBC8/BrPetoa0oksYoKXoG4ryJg==}
@@ -1803,6 +1844,8 @@ packages:
 
 snapshots:
 
+  '@amap/amap-jsapi-loader@1.0.1': {}
+
   '@ant-design/colors@6.0.0':
     dependencies:
       '@ctrl/tinycolor': 3.6.1
@@ -2261,6 +2304,20 @@ snapshots:
     dependencies:
       core-js: 3.46.0
       nanopop: 2.4.2
+
+  '@types/amap-js-api-city-search@1.4.3':
+    dependencies:
+      '@types/amap-js-api': 1.4.16
+
+  '@types/amap-js-api-geocoder@1.4.4':
+    dependencies:
+      '@types/amap-js-api': 1.4.16
+
+  '@types/amap-js-api-place-search@1.4.4':
+    dependencies:
+      '@types/amap-js-api': 1.4.16
+
+  '@types/amap-js-api@1.4.16': {}
 
   '@types/argparse@1.0.38':
     optional: true
@@ -2820,6 +2877,8 @@ snapshots:
   duplexer@0.1.2: {}
 
   entities@4.5.0: {}
+
+  es-toolkit@1.43.0: {}
 
   esbuild@0.25.12:
     optionalDependencies:
