@@ -1,5 +1,9 @@
 <template>
-  <Button class="inline-flex max-w-full items-center gap-1" type="link" size="small">
+  <Button
+    class="inline-flex max-w-full items-center gap-1"
+    type="link"
+    size="small"
+  >
     <Tooltip v-if="showTooltip">
       <template #title><slot></slot></template>
       <div ref="textRef" class="flex-1 truncate"><slot></slot></div>
@@ -10,10 +14,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, shallowRef } from 'vue';
-import { Button, Tooltip } from 'ant-design-vue';
 import { Icon } from "@iconify/vue";
-import { useResizeObserver } from '@vueuse/core';
+import { useResizeObserver } from "@vueuse/core";
+import { Button, Tooltip } from "ant-design-vue";
+import { ref, shallowRef } from "vue";
 
 /**
  * ====================

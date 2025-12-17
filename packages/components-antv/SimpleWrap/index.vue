@@ -12,8 +12,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
 import { Button, Empty, Result, ResultProps, Spin } from "ant-design-vue";
+import { computed } from "vue";
 
 import { SimpleWrapProps } from "./types";
 

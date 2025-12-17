@@ -16,11 +16,12 @@
   <Modal
     v-model:open="open"
     title="地址选择"
+    :width="width"
     destroyOnClose
     @cancel="mapClear()"
     @ok="confirm()"
   >
-    <div class="w-full h-100 relative">
+    <div class="w-full relative" :style="{ height: mapHeight }">
       <div ref="mapRef" class="size-full" />
       <InputGroup class="absolute top-2 left-2 w-80 flex" compact>
         <Cascader
@@ -54,15 +55,9 @@
 </template>
 
 <script setup lang="ts">
-import {
-  MaybeRefOrGetter,
-  nextTick,
-  onBeforeUnmount,
-  ref,
-  shallowRef,
-  toValue,
-  useTemplateRef,
-} from "vue";
+import { useAsyncData } from "@commeth/hooks";
+import { AMapService } from "@commeth/utils";
+import { Icon } from "@iconify/vue";
 import {
   AutoComplete,
   Cascader,
@@ -78,29 +73,31 @@ import {
   DefaultOptionType,
   ValueType,
 } from "ant-design-vue/es/vc-cascader/Cascader";
-import { Icon } from "@iconify/vue";
-
-import { AMapService } from "@commeth/utils";
-
-import MarkPng from "./mark.png";
-import { District, districts } from "./districts";
-import { useAsyncData } from "@commeth/hooks";
-
-import { AMapValue } from "./types";
 import { cloneDeep } from "es-toolkit";
+import {
+  computed,
+  MaybeRefOrGetter,
+  nextTick,
+  onBeforeUnmount,
+  ref,
+  shallowRef,
+  toValue,
+  useTemplateRef,
+} from "vue";
+
+import { District, districts } from "./districts";
+import MarkPng from "./mark.png";
+import { AMapSelectProps, AMapValue } from "./types";
 
 const formItemContext = Form.useInjectFormItemContext();
 
 const modelValue = defineModel<AMapValue>("modelValue");
-const { selectProps, aMap } = defineProps<{
-  /** 选择器的属性 */
-  selectProps?: SelectProps;
-  /**
-   * 高德地图实例
-   * @describe 如果不传入则会从`AMapService`中获取
-   */
-  aMap?: MaybeRefOrGetter<typeof AMap>;
-}>();
+const {
+  width = "90%",
+  height = "calc(100vh - 320px)",
+  selectProps,
+  aMap,
+} = defineProps<AMapSelectProps>();
 
 onBeforeUnmount(() => {
   mapClear();
@@ -111,6 +108,11 @@ onBeforeUnmount(() => {
  *       基本逻辑
  * ====================
  */
+const mapHeight = computed(() => {
+  if (typeof height === "number") return `${height}px`;
+  return height;
+});
+
 const open = shallowRef(false);
 /**
  * 处理选择器下拉框可见性变化

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useDebounceFn, DebounceFilterOptions } from "@vueuse/core";
 import {
   computed,
   MaybeRefOrGetter,
@@ -8,7 +9,6 @@ import {
   toValue,
   watch,
 } from "vue";
-import { useDebounceFn, DebounceFilterOptions } from "@vueuse/core";
 
 /**
  * 仿 Nuxt 的 useAsyncData 钩子，只实现了一些常用功能，不支持服务端渲染

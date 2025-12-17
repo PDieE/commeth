@@ -1,3 +1,6 @@
+import { SelectProps } from "ant-design-vue";
+import { MaybeRefOrGetter } from "vue";
+
 /** 高德地图选择器值 */
 export interface AMapValue {
   /** 地区编码 */
@@ -18,4 +21,19 @@ export interface AMapValue {
   longitude?: number;
   /** 纬度 */
   latitude?: number;
+}
+
+/** 高德地图选择器属性 */
+export interface AMapSelectProps {
+  /** 选择器宽度 */
+  width?: number | string;
+  /** 选择器高度 */
+  height?: number | string;
+  /** 选择器的属性 */
+  selectProps?: SelectProps;
+  /**
+   * 高德地图实例
+   * @describe 如果不传入则会从`AMapService`中获取
+   */
+  aMap?: MaybeRefOrGetter<typeof AMap>;
 }
