@@ -66,7 +66,6 @@ import {
   message,
   Modal,
   Select,
-  SelectProps,
 } from "ant-design-vue";
 import { LabeledValue } from "ant-design-vue/es/select";
 import {
@@ -76,7 +75,6 @@ import {
 import { cloneDeep } from "es-toolkit";
 import {
   computed,
-  MaybeRefOrGetter,
   nextTick,
   onBeforeUnmount,
   ref,
@@ -193,11 +191,11 @@ async function renderMap() {
   // 城市初始化
   if (selectedPoi.value && selectedPoi.value.adcode && selectedPoi.value.city) {
     // 存在 adcode 和 city 则直接使用
-    city.value = [
-      `${selectedPoi.value.adcode.slice(0, 2)}0000`,
-      `${selectedPoi.value.adcode.slice(0, 4)}00`,
-    ];
-    cityName.value = selectedPoi.value.city;
+    city.value = computeCityCode(selectedPoi.value.adcode);
+    cityName.value = computeCityName(
+      selectedPoi.value.city,
+      selectedPoi.value.province,
+    );
   } else if (
     selectedPoi.value &&
     selectedPoi.value.latitude &&
@@ -219,10 +217,14 @@ async function renderMap() {
           return;
         }
 
-        const { adcode, city: addressCity } = result.regeocode.addressComponent;
+        const {
+          adcode,
+          province,
+          city: addressCity,
+        } = result.regeocode.addressComponent;
 
-        city.value = [`${adcode.slice(0, 2)}0000`, `${adcode.slice(0, 4)}00`];
-        cityName.value = addressCity;
+        city.value = computeCityCode(adcode);
+        cityName.value = computeCityName(addressCity, province);
       },
     );
   } else {
@@ -238,8 +240,8 @@ async function renderMap() {
         console.warn("获取当前所在城市失败", status, result);
         return;
       }
-      city.value = [`${result.adcode.slice(0, 2)}0000`, result.adcode];
-      cityName.value = result.city;
+      city.value = computeCityCode(result.adcode);
+      cityName.value = computeCityName(result.city, result.province);
     });
   }
 }
@@ -276,6 +278,8 @@ async function mapClick(e: { lnglat: AMap.LngLat }) {
       return;
     }
 
+    console.log(result);
+
     const { formattedAddress } = result.regeocode;
     const {
       adcode,
@@ -310,8 +314,8 @@ async function mapClick(e: { lnglat: AMap.LngLat }) {
       latitude: e.lnglat.getLat(),
     };
 
-    city.value = [`${adcode.slice(0, 2)}0000`, `${adcode.slice(0, 4)}00`];
-    cityName.value = addressCity;
+    city.value = computeCityCode(adcode);
+    cityName.value = computeCityName(addressCity, province);
   });
 }
 
@@ -332,7 +336,8 @@ function selectDistrict(
   options: DefaultOptionType[] | DefaultOptionType[][],
 ) {
   const option = options[options.length - 1] as District;
-  cityName.value = option.name;
+  cityName.value = computeCityName(option.name);
+  searchPoi(cloneDeep(poiSearchKey.value));
 
   if (!map) return;
   map.setCenter(option.center.split(",").map(Number) as [number, number]);
@@ -349,6 +354,11 @@ const { data: poiList, execute: searchPoiList } = useAsyncData(
       city: cityName.value,
       extensions: "all",
     });
+    console.log({
+      city: cityName.value,
+      extensions: "all",
+    });
+
     if (!poiSearchKey.value) return Promise.resolve([]);
     return new Promise<AMap.PlaceSearch.Poi[]>((resolve, reject) => {
       placeSearch.search(poiSearchKey.value, (status, result) => {
@@ -432,8 +442,8 @@ async function selectPoi(
       latitude: location.getLat(),
     };
 
-    city.value = [`${adcode.slice(0, 2)}0000`, `${adcode.slice(0, 4)}00`];
-    cityName.value = addressCity;
+    city.value = computeCityCode(adcode);
+    cityName.value = computeCityName(addressCity, province);
   });
 }
 
@@ -493,6 +503,48 @@ function setMarker(
     }
     marker.setPosition(position);
   }
+}
+
+/**
+ * ====================
+ *        工具
+ * ====================
+ */
+/**
+ * 处理城市名称
+ * @param name 城市名称
+ * @param downgrade 降级名称
+ */
+function computeCityName(name: string, downgrade?: string) {
+  const res =
+    {
+      北京城区: "北京市",
+      天津城区: "天津市",
+      重庆城区: "重庆市",
+      重庆郊县: "重庆市",
+      上海城区: "上海市",
+    }[name] || name;
+  return res || downgrade;
+}
+/**
+ * 处理城市代码
+ * @param adcode 城市代码
+ */
+function computeCityCode(adcode: string) {
+  // 海口市、三亚市、三沙市、儋州市是海南的地级市
+  if (
+    adcode.startsWith("4601") ||
+    adcode.startsWith("4602") ||
+    adcode.startsWith("4603") ||
+    adcode.startsWith("4604")
+  ) {
+    return [`${adcode.slice(0, 2)}0000`, `${adcode.slice(0, 4)}00`];
+  }
+  // 海南的其他二级地区都不是地级市
+  if (adcode.startsWith("46")) {
+    return [`${adcode.slice(0, 2)}0000`, adcode];
+  }
+  return [`${adcode.slice(0, 2)}0000`, `${adcode.slice(0, 4)}00`];
 }
 </script>
 
