@@ -1,8 +1,8 @@
-import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import dts from "unplugin-dts/vite";
 import { resolve } from "path";
 import UnoCSS from "unocss/vite";
+import dts from "unplugin-dts/vite";
+import { defineConfig } from "vite";
 import { libInjectCss } from "vite-plugin-lib-inject-css";
 
 export default defineConfig({
@@ -24,6 +24,8 @@ export default defineConfig({
         "es-toolkit",
         "@commeth/utils",
         "@commeth/hooks",
+        "pretty-bytes",
+        "image-dimensions",
       ],
       output: [
         {

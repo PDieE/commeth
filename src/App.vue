@@ -1,13 +1,23 @@
 <script setup lang="ts">
-import { CeJumpLink } from "@commeth/components-antv";
-import { CeAMapSelect } from "@commeth/components-antv";
-import { AMapService } from "@commeth/utils";
+import {
+  CeJumpLink,
+  CeAMapSelect,
+  CeEnhancedUpload,
+} from "../packages/components-antv";
+import { AMapService } from "../packages/utils";
 
 // 初始化高德地图
 AMapService.init({
   key: "6b342ef0a0bc008d7c3831aab7e4f4d1",
   securityJsCode: "8712ec1f8864c180abafddd4616877df",
 });
+function request(options: { onSuccess?: (v: string) => void }) {
+  setTimeout(() => {
+    options.onSuccess?.(
+      "https://public.house-keeper.cn/e646854bccf94f4d9bd742eef3af4830.jpeg",
+    );
+  }, 100);
+}
 </script>
 
 <template>
@@ -21,6 +31,14 @@ AMapService.init({
   </div>
   <CeJumpLink>跳转链接</CeJumpLink>
   <CeAMapSelect />
+  <div>
+    <CeEnhancedUpload
+      :size-limit="1024 * 1024 * 2"
+      multiple
+      accept=".png,.jpg,.jpeg"
+      :request="request"
+    />
+  </div>
 </template>
 
 <style scoped>

@@ -8,7 +8,7 @@
     @dropdownVisibleChange="handleDropdownVisibleChange"
   >
     <template #suffixIcon>
-      <Icon icon="tdesign:location-1" :inline="true" />
+      <CeIconifyIcon icon="tdesign:location-1" />
     </template>
   </Select>
 
@@ -57,7 +57,6 @@
 <script setup lang="ts">
 import { useAsyncData } from "@commeth/hooks";
 import { AMapService } from "@commeth/utils";
-import { Icon } from "@iconify/vue";
 import {
   AutoComplete,
   Cascader,
@@ -83,6 +82,7 @@ import {
   useTemplateRef,
 } from "vue";
 
+import { CeIconifyIcon } from "../";
 import { District, districts } from "./districts";
 import MarkPng from "./mark.png";
 import { AMapSelectProps, AMapValue } from "./types";

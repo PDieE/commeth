@@ -9,15 +9,16 @@
       <div ref="textRef" class="flex-1 truncate"><slot></slot></div>
     </Tooltip>
     <div v-else ref="textRef" class="flex-1 truncate"><slot></slot></div>
-    <Icon icon="tdesign:jump" :inline="true" />
+    <CeIconifyIcon icon="ant-design:export-outlined" />
   </Button>
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import { useResizeObserver } from "@vueuse/core";
 import { Button, Tooltip } from "ant-design-vue";
 import { ref, shallowRef } from "vue";
+
+import { CeIconifyIcon } from "../";
 
 /**
  * ====================
