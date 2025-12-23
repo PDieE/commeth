@@ -1,0 +1,16 @@
+{
+  "files": [],
+  "references": [
+    { "path": "../.././tsconfig.app.json" },
+    { "path": "../.././tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "types": [
+      "vite/client",
+      "amap-js-api",
+      "amap-js-api-city-search",
+      "amap-js-api-geocoder",
+      "amap-js-api-place-search"
+    ]
+  },
+}
