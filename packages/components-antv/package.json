@@ -1,21 +1,21 @@
 {
   "name": "@commeth/components-antv",
-  "version": "0.0.33",
-  "main": "./dist/es/index.js",
-  "module": "./dist/es/index.js",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "fnm exec -- vite build"
+    "build": "rm -rf dist && fnm exec -- vite build"
   },
   "peerDependencies": {
     "ant-design-vue": "^4.2.6",
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "@commeth/hooks": "^0.0.1",
-    "@commeth/utils": "^0.0.1",
+    "@commeth/hooks": "^0.1.0",
+    "@commeth/utils": "^0.1.0",
     "@iconify/vue": "^5.0.0",
     "@vueuse/core": "^14.1.0",
     "es-toolkit": "^1.43.0",

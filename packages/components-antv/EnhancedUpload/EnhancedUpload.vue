@@ -9,6 +9,7 @@
     :maxCount="maxCount"
     :accept="accept"
     :beforeUpload="beforeUpload"
+    @preview="previewImage"
   >
     <slot v-if="$slots.default" />
     <Button v-if="listType !== 'picture-card'" :disabled="overMaxCount">
@@ -22,16 +23,28 @@
       <div class="mt-2">点我上传</div>
     </div>
   </Upload>
+  <div class="hidden">
+    <ImagePreviewGroup :preview="showPreviewImage">
+      <Image v-for="(item, i) in previewImages" :key="i" :src="item" />
+    </ImagePreviewGroup>
+  </div>
 </template>
 
 <script setup lang="ts">
-import type { UploadRequestOption } from "ant-design-vue/es/vc-upload/interface";
-
-import { Button, message, Upload, UploadFile } from "ant-design-vue";
+import {
+  Button,
+  Image,
+  ImagePreviewGroup,
+  message,
+  Upload,
+  UploadFile,
+} from "ant-design-vue";
 import { FileType } from "ant-design-vue/es/upload/interface";
+import { PreviewGroupPreview } from "ant-design-vue/es/vc-image/src/PreviewGroup";
+import { UploadRequestOption } from "ant-design-vue/es/vc-upload/interface";
 import { imageDimensionsFromData } from "image-dimensions";
 import prettyBytes from "pretty-bytes";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 import { CeIconifyIcon } from "../IconifyIcon";
 import { EnhancedUploadProps } from "./types";
@@ -226,6 +239,44 @@ function customRequest(options: UploadRequestOption) {
       options.onSuccess?.(body);
     },
   });
+}
+
+/**
+ * ====================
+ *       图片预览
+ * ====================
+ */
+const showPreviewImage = ref<PreviewGroupPreview>({
+  visible: false,
+  current: 0,
+  onVisibleChange: (visible) => {
+    showPreviewImage.value.visible = visible;
+  },
+});
+const previewImages = computed(() => {
+  if (!modelValue.value) {
+    return [];
+  }
+  return modelValue.value.filter((v) => v.url).map((v) => v.url!);
+});
+/**
+ * 预览图片
+ * @param image 要预览的图片
+ */
+function previewImage(image: UploadFile) {
+  if (!image.url || !previewImages.value.length) {
+    return;
+  }
+
+  let current = 0;
+
+  const index = previewImages.value.indexOf(image.url);
+  if (index > -1) {
+    current = index;
+  }
+
+  showPreviewImage.value.current = current;
+  showPreviewImage.value.visible = true;
 }
 </script>
 

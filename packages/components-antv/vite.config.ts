@@ -34,7 +34,7 @@ export default defineConfig({
           exports: "named",
           preserveModules: true,
           preserveModulesRoot: ".",
-          dir: "./dist/es",
+          dir: "./dist",
         },
       ],
     },
@@ -45,7 +45,7 @@ export default defineConfig({
     dts({
       tsconfigPath: "./tsconfig.prod.json",
       processor: "vue",
-      outDirs: ["./dist/es"],
+      outDirs: ["./dist"],
     }),
     libInjectCss(),
   ],

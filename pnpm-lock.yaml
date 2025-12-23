@@ -106,11 +106,11 @@ importers:
   packages/components-antv:
     dependencies:
       '@commeth/hooks':
-        specifier: ^0.0.1
-        version: 0.0.1(vue@3.5.25(typescript@5.9.3))
+        specifier: ^0.1.0
+        version: 0.1.0(vue@3.5.25(typescript@5.9.3))
       '@commeth/utils':
-        specifier: ^0.0.1
-        version: 0.0.1(vue@3.5.25(typescript@5.9.3))
+        specifier: ^0.1.0
+        version: 0.1.0(vue@3.5.25(typescript@5.9.3))
       '@iconify/vue':
         specifier: ^5.0.0
         version: 5.0.0(vue@3.5.25(typescript@5.9.3))
@@ -274,13 +274,13 @@ packages:
     resolution: {integrity: sha512-qQ5m48eI/MFLQ5PxQj4PFaprjyCTLI37ElWMmNs0K8Lk3dVeOdNpB3ks8jc7yM5CDmVC73eMVk/trk3fgmrUpA==}
     engines: {node: '>=6.9.0'}
 
-  '@commeth/hooks@0.0.1':
-    resolution: {integrity: sha512-cquyynnamudNcX5XfHEAbyXKeJsQi28VtwMmZBS1gnfqbYE+VRvic9RXOcp1xLI0Et8QZpDmyj5xOWBa5sVjGQ==}
+  '@commeth/hooks@0.1.0':
+    resolution: {integrity: sha512-KbZISp7/lMNJo5UIBZsyUi3IBvQRrSMHoH8z+9fGxQ6M1bmghtcQSI3h/JRxYkQPgpy00xc+mw5Jlv+/dfNsEA==}
     peerDependencies:
       vue: ^3.5.0
 
-  '@commeth/utils@0.0.1':
-    resolution: {integrity: sha512-BdrvQyeoQBNTw0TgRkX7DmzizI9xcfaus5U9gvEhrob1MHsS5yYZ2GFVaEFaV2rU93eiGc98epoR1Guvkh/Ntg==}
+  '@commeth/utils@0.1.0':
+    resolution: {integrity: sha512-fVdYk7uK7Qw+EhfY440E+vip7AYJTWJy0oYV7jP43uVStU+N6c3CiavcPkZVAJd72O4TMUQiLYMplZgfzIBfHw==}
     peerDependencies:
       vue: ^3.5.0
 
@@ -2023,12 +2023,12 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@commeth/hooks@0.0.1(vue@3.5.25(typescript@5.9.3))':
+  '@commeth/hooks@0.1.0(vue@3.5.25(typescript@5.9.3))':
     dependencies:
       '@vueuse/core': 14.1.0(vue@3.5.25(typescript@5.9.3))
       vue: 3.5.25(typescript@5.9.3)
 
-  '@commeth/utils@0.0.1(vue@3.5.25(typescript@5.9.3))':
+  '@commeth/utils@0.1.0(vue@3.5.25(typescript@5.9.3))':
     dependencies:
       '@amap/amap-jsapi-loader': 1.0.1
       vue: 3.5.25(typescript@5.9.3)

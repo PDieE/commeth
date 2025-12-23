@@ -19,7 +19,7 @@ export default defineConfig({
           exports: "named",
           preserveModules: true,
           preserveModulesRoot: ".",
-          dir: "./dist/es",
+          dir: "./dist",
         },
       ],
     },
@@ -27,7 +27,7 @@ export default defineConfig({
   plugins: [
     dts({
       tsconfigPath: "./tsconfig.prod.json",
-      outDirs: ["./dist/es"],
+      outDirs: ["./dist"],
     }),
   ],
 });

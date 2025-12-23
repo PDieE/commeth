@@ -1,14 +1,13 @@
 {
   "name": "@commeth/utils",
-  "version": "0.0.1",
-  "main": "./dist/es/index.js",
-  "module": "./dist/es/index.js",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "fnm exec -- vite build",
-    "publish": "npm publish --access public"
+    "build": "rm -rf dist && fnm exec -- vite build"
   },
   "peerDependencies": {
     "vue": "^3.5.0"
