@@ -26,6 +26,7 @@ export default defineConfig({
         "@commeth/hooks",
         "pretty-bytes",
         "image-dimensions",
+        /^@tiptap\//,
       ],
       output: [
         {

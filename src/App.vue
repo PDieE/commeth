@@ -26,6 +26,7 @@
   >
     <input v-model="filterFormData.name" placeholder="服务名称" />
   </CeFilterForm>
+  <CeRichEditor />
 </template>
 
 <script setup lang="ts">
@@ -36,6 +37,7 @@ import {
   CeAMapSelect,
   CeEnhancedUpload,
   CeFilterForm,
+  CeRichEditor,
 } from "../packages/components-antv";
 import { AMapService } from "../packages/utils";
 
@@ -47,7 +49,7 @@ AMapService.init({
 function request(options: { onSuccess?: (v: string) => void }) {
   setTimeout(() => {
     options.onSuccess?.(
-      "https://public.house-keeper.cn/e646854bccf94f4d9bd742eef3af4830.jpeg",
+      "https://public.house-keeper.cn/static/dev/0d7e4316879345aa96d9d381e4af109a.jpg",
     );
   }, 100);
 }

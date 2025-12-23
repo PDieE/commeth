@@ -1,0 +1,594 @@
+<template>
+  {{ innerValue }}
+  <div
+    v-if="editor"
+    class="border border-border border-solid rounded-3px overflow-hidden transition-all hover:border-brand"
+    :class="{
+      'border-brand shadow-[0_0_0_2px] shadow-brand-color-focus':
+        editor?.isFocused,
+    }"
+  >
+    <div
+      class="flex flex-wrap items-center gap-2 p-2 border-0 border-b border-border border-solid sticky top-0 bg-white z-1"
+    >
+      <!-- 撤销/重做 -->
+      <RichEditorButton
+        tip="撤销"
+        :disabled="!editor.can().chain().focus().undo().run()"
+        @click="editor.chain().focus().undo().run()"
+      >
+        <template #icon><CeIconifyIcon icon="tdesign:rollback" /></template>
+      </RichEditorButton>
+      <RichEditorButton
+        tip="重做"
+        :disabled="!editor.can().chain().focus().redo().run()"
+        @click="editor.chain().focus().redo().run()"
+      >
+        <template #icon><CeIconifyIcon icon="tdesign:rollfront" /></template>
+      </RichEditorButton>
+      <Divider class="!m-0" type="vertical" />
+      <!-- 字体样式 -->
+      <RichEditorSelect tip="段落/标题" :options="headingOptions">
+        <template #icon><CeIconifyIcon icon="tdesign:clear" /></template>
+      </RichEditorSelect>
+      <RichEditorButton
+        tip="加粗"
+        :active="editor.isActive('bold')"
+        :disabled="!editor.can().chain().focus().toggleBold().run()"
+        @click="editor.chain().focus().toggleBold().run()"
+      >
+        <template #icon>
+          <CeIconifyIcon icon="tdesign:textformat-bold" />
+        </template>
+      </RichEditorButton>
+      <RichEditorButton
+        tip="斜体"
+        :active="editor.isActive('italic')"
+        :disabled="!editor.can().chain().focus().toggleItalic().run()"
+        @click="editor.chain().focus().toggleItalic().run()"
+      >
+        <template #icon>
+          <CeIconifyIcon icon="tdesign:textformat-italic" />
+        </template>
+      </RichEditorButton>
+      <RichEditorButton
+        tip="删除线"
+        :active="editor.isActive('strike')"
+        :disabled="!editor.can().chain().focus().toggleStrike().run()"
+        @click="editor.chain().focus().toggleStrike().run()"
+      >
+        <template #icon>
+          <CeIconifyIcon icon="tdesign:textformat-strikethrough" />
+        </template>
+      </RichEditorButton>
+      <RichEditorButton
+        tip="行内代码"
+        :active="editor.isActive('code')"
+        :disabled="!editor.can().chain().focus().toggleCode().run()"
+        @click="editor.chain().focus().toggleCode().run()"
+      >
+        <template #icon><CeIconifyIcon icon="tdesign:code-1" /></template>
+      </RichEditorButton>
+      <Divider class="!m-0" type="vertical" />
+      <!-- 格式/节点清除 -->
+      <RichEditorButton
+        tip="清除格式"
+        @click="editor.chain().focus().unsetAllMarks().run()"
+      >
+        <template #icon>
+          <CeIconifyIcon icon="tdesign:clear-formatting" />
+        </template>
+      </RichEditorButton>
+      <RichEditorButton
+        tip="清除节点"
+        @click="editor.chain().focus().clearNodes().run()"
+      >
+        <template #icon><CeIconifyIcon icon="tdesign:clear" /></template>
+      </RichEditorButton>
+      <Divider class="!m-0" type="vertical" />
+      <!-- 其他样式 -->
+      <RichEditorButton
+        tip="无序列表"
+        :active="editor.isActive('bulletList')"
+        @click="editor.chain().focus().toggleBulletList().run()"
+      >
+        <template #icon><CeIconifyIcon icon="tdesign:list" /></template>
+      </RichEditorButton>
+      <RichEditorButton
+        tip="有序列表"
+        :active="editor.isActive('orderedList')"
+        @click="editor.chain().focus().toggleOrderedList().run()"
+      >
+        <template #icon>
+          <CeIconifyIcon icon="tdesign:list-numbered" />
+        </template>
+      </RichEditorButton>
+      <RichEditorButton
+        tip="代码块"
+        :active="editor.isActive('codeBlock')"
+        @click="editor.chain().focus().toggleCodeBlock().run()"
+      >
+        <template #icon><CeIconifyIcon icon="tdesign:code" /></template>
+      </RichEditorButton>
+      <RichEditorButton
+        tip="块引用"
+        :active="editor.isActive('blockquote')"
+        @click="editor.chain().focus().toggleBlockquote().run()"
+      >
+        <template #icon><CeIconifyIcon icon="tdesign:quote" /></template>
+      </RichEditorButton>
+      <RichEditorButton
+        tip="分割线"
+        @click="editor.chain().focus().setHorizontalRule().run()"
+      >
+        <template #icon>
+          <CeIconifyIcon icon="tdesign:component-divider-vertical" />
+        </template>
+      </RichEditorButton>
+      <RichEditorButton
+        tip="强制换行"
+        @click="editor.chain().focus().setHardBreak().run()"
+      >
+        <template #icon><CeIconifyIcon icon="tdesign:enter" /></template>
+      </RichEditorButton>
+      <RichEditorColor
+        icon="tdesign:textformat-color"
+        :color="textColor"
+        @confirm="setTextColor"
+      />
+      <RichEditorButton tip="添加图片" @click="addImage()">
+        <template #icon><CeIconifyIcon icon="tdesign:image-add" /></template>
+      </RichEditorButton>
+      <input
+        ref="imageUploadRef"
+        class="hidden"
+        type="file"
+        accept="image/*"
+        multiple
+        @change="imageUploadChange"
+      />
+    </div>
+    <editor-content
+      class="p-2 min-h-50 max-h-100 overflow-y-auto"
+      :editor="editor"
+      placeholder="请输入内容"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import Image from "@tiptap/extension-image";
+import { ListItem } from "@tiptap/extension-list";
+import { Color, TextStyle } from "@tiptap/extension-text-style";
+import StarterKit from "@tiptap/starter-kit";
+import { Editor, EditorContent, type EditorEvents } from "@tiptap/vue-3";
+import { Divider } from "ant-design-vue";
+import {
+  computed,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  shallowRef,
+  useTemplateRef,
+  watch,
+} from "vue";
+
+import type { RichEditorSelectOption } from "./types";
+
+import { CeIconifyIcon } from "../";
+import RichEditorButton from "./Button.vue";
+import RichEditorColor from "./Color.vue";
+import { ImageUpload } from "./node/ImageUpload";
+import RichEditorSelect from "./Select.vue";
+
+const innerValue = defineModel<string>("modelValue", { default: "" });
+watch(innerValue, (val) => {
+  const isSame = editor.value?.getHTML() === val;
+  if (isSame) {
+    return;
+  }
+
+  editor.value?.commands.setContent(val);
+});
+
+onMounted(() => {
+  init();
+});
+
+onBeforeUnmount(() => {
+  // 卸载前销毁编辑器
+  editor.value?.destroy();
+});
+
+/**
+ * ====================
+ *       基本逻辑
+ * ====================
+ */
+/** 编辑器实例 */
+const editor = ref<Editor>();
+/** 初始化编辑器 */
+function init() {
+  editor.value = new Editor({
+    extensions: [
+      Color.configure({ types: [TextStyle.name, ListItem.name] }),
+      TextStyle,
+      StarterKit,
+      Image.configure({
+        resize: {
+          enabled: true,
+          directions: [
+            "top",
+            "right",
+            "bottom",
+            "left",
+            "top-right",
+            "top-left",
+            "bottom-right",
+            "bottom-left",
+          ],
+          minWidth: 10,
+          minHeight: 10,
+          alwaysPreserveAspectRatio: true,
+        },
+      }),
+      ImageUpload,
+    ],
+    content: innerValue.value,
+    onUpdate: () => {
+      innerValue.value = editor.value?.getHTML() || "";
+    },
+    onSelectionUpdate(props) {
+      onTextColorSelectionUpdate(props);
+    },
+  });
+}
+/** 段落/标题选项 */
+const headingOptions = computed<RichEditorSelectOption[]>(() => {
+  if (!editor.value) {
+    return [];
+  }
+  return [
+    {
+      label: "段落",
+      value: "paragraph",
+      icon: "hugeicons:paragraph",
+      active: editor.value.isActive("paragraph"),
+      action: () => editor.value?.chain().focus().setParagraph().run(),
+    },
+    {
+      label: "标题 1",
+      value: "heading-01",
+      icon: "hugeicons:heading-01",
+      active: editor.value.isActive("heading", { level: 1 }),
+      action: () =>
+        editor.value?.chain().focus().toggleHeading({ level: 1 }).run(),
+    },
+    {
+      label: "标题 2",
+      value: "heading-02",
+      icon: "hugeicons:heading-02",
+      active: editor.value.isActive("heading", { level: 2 }),
+      action: () =>
+        editor.value?.chain().focus().toggleHeading({ level: 2 }).run(),
+    },
+    {
+      label: "标题 3",
+      value: "heading-03",
+      icon: "hugeicons:heading-03",
+      active: editor.value.isActive("heading", { level: 3 }),
+      action: () =>
+        editor.value?.chain().focus().toggleHeading({ level: 3 }).run(),
+    },
+    {
+      label: "标题 4",
+      value: "heading-04",
+      icon: "hugeicons:heading-04",
+      active: editor.value.isActive("heading", { level: 4 }),
+      action: () =>
+        editor.value?.chain().focus().toggleHeading({ level: 4 }).run(),
+    },
+    {
+      label: "标题 5",
+      value: "heading-05",
+      icon: "hugeicons:heading-05",
+      active: editor.value.isActive("heading", { level: 5 }),
+      action: () =>
+        editor.value?.chain().focus().toggleHeading({ level: 5 }).run(),
+    },
+    {
+      label: "标题 6",
+      value: "heading-06",
+      icon: "hugeicons:heading-06",
+      active: editor.value.isActive("heading", { level: 6 }),
+      action: () =>
+        editor.value?.chain().focus().toggleHeading({ level: 6 }).run(),
+    },
+  ];
+});
+
+/**
+ * ====================
+ *       字体颜色
+ * ====================
+ */
+const textColor = shallowRef<string>();
+/**
+ * 设定好字体颜色
+ * @param color 字体颜色
+ */
+function setTextColor(color?: string) {
+  textColor.value = color;
+  if (!color) {
+    editor.value?.chain().focus().unsetColor().run();
+    return;
+  }
+  editor.value?.chain().focus().setColor(color).run();
+}
+/**
+ * 选区变更回调 - 获取字体颜色
+ * @param props 选区变更事件参数
+ */
+function onTextColorSelectionUpdate(props: EditorEvents["selectionUpdate"]) {
+  textColor.value = props.editor.getAttributes("textStyle").color ?? undefined;
+}
+
+/**
+ * ====================
+ *       添加图片
+ * ====================
+ */
+const imageUploadRef = useTemplateRef("imageUploadRef");
+/** 添加图片 */
+function addImage() {
+  if (!imageUploadRef.value) {
+    return;
+  }
+  imageUploadRef.value.value = "";
+  // imageUploadRef.value.files = null;
+  imageUploadRef.value.click();
+  // editor.value?.chain().setImageUpload({}).run();
+}
+function imageUploadChange(e: Event) {
+  console.log(e);
+  if (!imageUploadRef.value) {
+    return;
+  }
+  const files = imageUploadRef.value.files;
+  if (!files || !files.length) {
+    return;
+  }
+  console.log(files);
+  for (const file of files) {
+    console.log(file);
+
+    editor.value?.chain().focus().setImageUpload({ file }).run();
+    editor.value
+      ?.chain()
+      .setTextSelection({
+        from: editor.value.state.selection.from + 1,
+        to: editor.value.state.selection.from + 1,
+      })
+      .run();
+  }
+
+  // const files = imageUploadRef.value?.files;
+  // if (!files || files.length === 0) {
+  //   return;
+  // }
+  // const file = files[0];
+  // const reader = new FileReader();
+  // reader.readAsDataURL(file);
+  // reader.onloadend = () => {
+  //   const base64 = reader.result?.toString().split(",")[1] || "";
+  //   editor.value?.chain().focus().setImage({ src: base64 }).run();
+  // };
+}
+</script>
+
+<style lang="scss" scoped>
+:deep(.tiptap) {
+  :first-child {
+    margin-top: 0;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  /* List styles */
+  ul,
+  ol {
+    padding: 0 1rem;
+    margin: 1.25rem 1rem 1.25rem 0.4rem;
+
+    li p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+  }
+
+  /* Heading styles */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.1;
+    margin-top: 2.5rem;
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2 {
+    margin-top: 3.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-size: 1rem;
+  }
+
+  /* Code and preformatted text styles */
+  code {
+    background-color: rgba(88, 5, 255, 0.05);
+    border-radius: 0.4rem;
+    color: #2e2b29;
+    font-size: 0.85rem;
+    padding: 0.25em 0.3em;
+  }
+
+  pre {
+    background: #2e2b29;
+    border-radius: 0.5rem;
+    color: #fff;
+    font-family: "JetBrainsMono", monospace;
+    margin: 1.5rem 0;
+    padding: 0.75rem 1rem;
+
+    code {
+      background: none;
+      color: inherit;
+      font-size: 0.8rem;
+      padding: 0;
+    }
+  }
+
+  blockquote {
+    border-left: 3px solid rgba(61, 37, 20, 0.12);
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid rgba(61, 37, 20, 0.08);
+    margin: 2rem 0;
+  }
+
+  img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+
+    &.ProseMirror-selectednode {
+      outline: 3px solid #6a00f5;
+    }
+  }
+
+  [data-resize-wrapper] {
+    outline: 3px solid transparent;
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      outline: 3px solid var(--color-primary-border-hover);
+      border-radius: 3px;
+    }
+  }
+
+  [data-resize-handle] {
+    position: absolute;
+    z-index: 10;
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Corner handles */
+    &[data-resize-handle="top-left"],
+    &[data-resize-handle="top-right"],
+    &[data-resize-handle="bottom-left"],
+    &[data-resize-handle="bottom-right"] {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid #fff;
+      background: var(--color-primary);
+
+      &:hover {
+        background: var(--color-primary-hover);
+      }
+    }
+
+    &[data-resize-handle="top-left"] {
+      top: -6px !important;
+      left: -6px !important;
+      cursor: nwse-resize;
+    }
+
+    &[data-resize-handle="top-right"] {
+      top: -6px !important;
+      right: -6px !important;
+      cursor: nesw-resize;
+    }
+
+    &[data-resize-handle="bottom-left"] {
+      bottom: -6px !important;
+      left: -6px !important;
+      cursor: nesw-resize;
+    }
+
+    &[data-resize-handle="bottom-right"] {
+      bottom: -6px !important;
+      right: -6px !important;
+      cursor: nwse-resize;
+    }
+
+    /* Edge handles */
+    &[data-resize-handle="top"],
+    &[data-resize-handle="bottom"],
+    &[data-resize-handle="right"],
+    &[data-resize-handle="left"] {
+      &:hover {
+        background: var(--color-primary-hover);
+      }
+    }
+
+    &[data-resize-handle="top"],
+    &[data-resize-handle="bottom"] {
+      height: 6px;
+      left: 8px;
+      right: 8px;
+    }
+
+    &[data-resize-handle="top"] {
+      top: -3px;
+      cursor: ns-resize;
+    }
+
+    &[data-resize-handle="bottom"] {
+      bottom: -3px;
+      cursor: ns-resize;
+    }
+
+    &[data-resize-handle="left"],
+    &[data-resize-handle="right"] {
+      width: 6px;
+      top: 8px;
+      bottom: 8px;
+    }
+
+    &[data-resize-handle="left"] {
+      left: -3px;
+      cursor: ew-resize;
+    }
+
+    &[data-resize-handle="right"] {
+      right: -3px;
+      cursor: ew-resize;
+    }
+  }
+}
+</style>
