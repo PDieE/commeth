@@ -30,7 +30,7 @@ function request(options: { onSuccess?: (v: string) => void }) {
     </a>
   </div>
   <CeJumpLink>跳转链接</CeJumpLink>
-  <CeAMapSelect />
+  <CeAMapSelect defaultAddress="紫琅科技城" />
   <div>
     <CeEnhancedUpload
       :size-limit="1024 * 1024 * 2"

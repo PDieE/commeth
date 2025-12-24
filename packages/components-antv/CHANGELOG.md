@@ -1,3 +1,12 @@
+# 0.1.1
+
+## 2025-12-24
+
+- feat: `AMapSelect`添加`change`事件
+- feat: `AMapSelect`添加`defaultAddress`属性，如果传入，则当选择器未选中任何位置时，使用默认地址获取定位
+
+### 🚀 Features
+
 # 0.1.0
 
 ## 2025-12-23

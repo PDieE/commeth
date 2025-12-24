@@ -95,7 +95,11 @@ const {
   height = "calc(100vh - 320px)",
   selectProps,
   aMap,
+  defaultAddress,
 } = defineProps<AMapSelectProps>();
+const emits = defineEmits<{
+  change: [value: AMapValue];
+}>();
 
 onBeforeUnmount(() => {
   mapClear();
@@ -129,6 +133,7 @@ function confirm() {
     return;
   }
   modelValue.value = cloneDeep(selectedPoi.value);
+  emits("change", cloneDeep(selectedPoi.value));
   open.value = false;
   mapClear();
   formItemContext.onFieldChange();
@@ -165,27 +170,16 @@ async function renderMap() {
   map = new aMap.Map(mapRef.value, { zoom: 11, pitch: 0, viewMode: "3D" });
   map.on("click", mapClick);
 
-  // 如果存在坐标则设置地图中心和缩放级别
   if (
     selectedPoi.value &&
     selectedPoi.value.latitude &&
     selectedPoi.value.longitude
   ) {
-    map.setZoom(14);
-    map.setCenter([selectedPoi.value.longitude, selectedPoi.value.latitude]);
-
-    setTimeout(() => {
-      setMarker({
-        position: new aMap.LngLat(
-          selectedPoi.value!.longitude!,
-          selectedPoi.value!.latitude!,
-        ),
-        label: {
-          content:
-            selectedPoi.value!.address || selectedPoi.value!.formattedAddress,
-        },
-      });
-    }, 1000);
+    // 如果存在坐标则设置地图中心和缩放级别
+    setMarkerBySelectedPoi();
+  } else if (defaultAddress) {
+    // 不存在坐标则通过默认地址获取定位
+    setMarkerByDefaultAddress();
   }
 
   // 城市初始化
@@ -245,6 +239,106 @@ async function renderMap() {
     });
   }
 }
+/** 通过已选中的位置设置标记 */
+function setMarkerBySelectedPoi() {
+  if (
+    !selectedPoi.value ||
+    !selectedPoi.value.longitude ||
+    !selectedPoi.value.latitude
+  ) {
+    return;
+  }
+  const aMap = getAMap();
+
+  map!.setZoom(14);
+  map!.setCenter([selectedPoi.value.longitude, selectedPoi.value.latitude]);
+
+  setTimeout(() => {
+    setMarker({
+      position: new aMap.LngLat(
+        selectedPoi.value!.longitude!,
+        selectedPoi.value!.latitude!,
+      ),
+      label: {
+        content:
+          selectedPoi.value!.address || selectedPoi.value!.formattedAddress,
+      },
+    });
+  }, 1000);
+}
+/** 通过默认地址设置标记 */
+async function setMarkerByDefaultAddress() {
+  if (!defaultAddress) {
+    return;
+  }
+  const aMap = getAMap();
+
+  if (!aMap.Geocoder) {
+    await AMapService.plugin("AMap.Geocoder");
+  }
+  const geocoder = new aMap.Geocoder({ extensions: "all" });
+  geocoder.getLocation(defaultAddress, (status, result) => {
+    if (
+      status !== "complete" ||
+      typeof result === "string" ||
+      !result.geocodes.length
+    ) {
+      console.warn("默认地址定位失败", status, result);
+      return;
+    }
+
+    const geocode = result.geocodes[0];
+    geocoder.getAddress(geocode.location, (status, result) => {
+      if (status !== "complete" || typeof result === "string") {
+        console.warn("默认地址定位, 获取位置信息失败", status, result);
+        return;
+      }
+
+      const { formattedAddress } = result.regeocode;
+      const {
+        adcode,
+        province,
+        city: addressCity,
+        district,
+        township,
+      } = result.regeocode.addressComponent;
+      const address = formattedAddress
+        .replace(
+          new RegExp(
+            [province, addressCity, district, township]
+              .filter(Boolean)
+              .join("|"),
+            "g",
+          ),
+          "",
+        )
+        .trim();
+
+      setMarker({
+        position: geocode.location,
+        label: { content: address },
+      });
+
+      map!.setCenter(geocode.location);
+      map!.setZoom(Math.max(map!.getZoom(), 14));
+
+      selectedPoi.value = {
+        adcode,
+        province,
+        city: addressCity,
+        district,
+        township,
+        address,
+        formattedAddress,
+        longitude: geocode.location.getLng(),
+        latitude: geocode.location.getLat(),
+      };
+
+      city.value = computeCityCode(adcode);
+      cityName.value = computeCityName(addressCity, province);
+    });
+  });
+}
 /**
  * 地图点击事件
  * @param e 事件数据
@@ -277,8 +371,6 @@ async function mapClick(e: { lnglat: AMap.LngLat }) {
       console.warn("获取位置信息失败", status, result);
       return;
     }
-
-    console.log(result);
 
     const { formattedAddress } = result.regeocode;
     const {
@@ -351,10 +443,6 @@ const { data: poiList, execute: searchPoiList } = useAsyncData(
       await AMapService.plugin("AMap.PlaceSearch");
     }
     const placeSearch = new aMap.PlaceSearch({
-      city: cityName.value,
-      extensions: "all",
-    });
-    console.log({
       city: cityName.value,
       extensions: "all",
     });
