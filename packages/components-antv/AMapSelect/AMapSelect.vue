@@ -82,7 +82,7 @@ import {
   useTemplateRef,
 } from "vue";
 
-import { CeIconifyIcon } from "../";
+import { CeIconifyIcon } from "../index";
 import { District, districts } from "./districts";
 import MarkPng from "./mark.png";
 import { AMapSelectProps, AMapValue } from "./types";
