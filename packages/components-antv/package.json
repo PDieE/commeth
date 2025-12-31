@@ -1,13 +1,13 @@
 {
   "name": "@commeth/components-antv",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf dist && fnm exec -- vite build"
+    "build": "fnm exec -- vite build"
   },
   "peerDependencies": {
     "ant-design-vue": "^4.2.6",

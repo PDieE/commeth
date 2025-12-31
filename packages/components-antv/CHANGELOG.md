@@ -1,3 +1,19 @@
+# 0.2.0
+
+## 2025-12-31
+
+### 🚀 Features
+
+- `AMapSelect`添加`change`事件
+- `AMapSelect`添加`defaultAddress`属性，如果传入，则当选择器未选中任何位置时，使用默认地址获取定位
+- 新增`FilterForm`组件，用于统一筛选表单展示
+
+### 🐞 Bug Fixes
+
+- 修正由于直接从根目录导入组件，导致每多打一次包就会多产生一级dist的问题
+
+### 🚀 Features
+
 # 0.1.0
 
 ## 2025-12-23

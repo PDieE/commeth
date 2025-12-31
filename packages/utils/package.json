@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf dist && fnm exec -- vite build"
+    "build": "fnm exec -- vite build"
   },
   "peerDependencies": {
     "vue": "^3.5.0"

@@ -46,7 +46,7 @@ import { imageDimensionsFromData } from "image-dimensions";
 import prettyBytes from "pretty-bytes";
 import { computed, ref } from "vue";
 
-import { CeIconifyIcon } from "../IconifyIcon";
+import { CeIconifyIcon } from "../index";
 import { EnhancedUploadProps } from "./types";
 
 /** accept 属性的对象形式 */

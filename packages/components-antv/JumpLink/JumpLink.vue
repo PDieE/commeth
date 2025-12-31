@@ -18,7 +18,7 @@ import { useResizeObserver } from "@vueuse/core";
 import { Button, Tooltip } from "ant-design-vue";
 import { ref, shallowRef } from "vue";
 
-import { CeIconifyIcon } from "../";
+import { CeIconifyIcon } from "../index";
 
 /**
  * ====================

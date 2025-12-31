@@ -36,4 +36,9 @@ export interface AMapSelectProps {
    * @describe 如果不传入则会从`AMapService`中获取
    */
   aMap?: MaybeRefOrGetter<typeof AMap>;
+  /**
+   * 默认地址
+   * @describe 如果传入，则当选择器未选中任何位置时，使用默认地址获取定位
+   */
+  defaultAddress?: string;
 }

@@ -1,8 +1,39 @@
+<template>
+  <div>
+    <a href="https://vite.dev" target="_blank">
+      <img src="/vite.svg" class="logo" alt="Vite logo" />
+    </a>
+    <a href="https://vuejs.org/" target="_blank">
+      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+    </a>
+  </div>
+  <CeJumpLink>跳转链接</CeJumpLink>
+  <CeAMapSelect defaultAddress="紫琅科技城" />
+  <div>
+    <CeEnhancedUpload
+      :size-limit="1024 * 1024 * 2"
+      multiple
+      accept=".png,.jpg,.jpeg"
+      :request="request"
+    />
+  </div>
+  <CeFilterForm
+    v-model:form-data="filterFormData"
+    class="mb-4"
+    :resetIgnore="['status']"
+  >
+    <input v-model="filterFormData.name" placeholder="服务名称" />
+  </CeFilterForm>
+</template>
+
 <script setup lang="ts">
+import { ref } from "vue";
+
 import {
   CeJumpLink,
   CeAMapSelect,
   CeEnhancedUpload,
+  CeFilterForm,
 } from "../packages/components-antv";
 import { AMapService } from "../packages/utils";
 
@@ -18,28 +49,8 @@ function request(options: { onSuccess?: (v: string) => void }) {
     );
   }, 100);
 }
+const filterFormData = ref({ name: "" });
 </script>
-
-<template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <CeJumpLink>跳转链接</CeJumpLink>
-  <CeAMapSelect />
-  <div>
-    <CeEnhancedUpload
-      :size-limit="1024 * 1024 * 2"
-      multiple
-      accept=".png,.jpg,.jpeg"
-      :request="request"
-    />
-  </div>
-</template>
 
 <style scoped>
 .logo {
