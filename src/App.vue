@@ -37,8 +37,8 @@ import {
   CeAMapSelect,
   CeEnhancedUpload,
   CeFilterForm,
-  CeRichEditor,
 } from "../packages/components-antv";
+import { CeRichEditor } from "../packages/rich-editor";
 import { AMapService } from "../packages/utils";
 
 // 初始化高德地图
