@@ -13,8 +13,8 @@
     >
       <Button variant="text" size="small">
         <div class="flex items-center">
-          <CeIconifyIcon class="size-3.5" :icon="active?.icon ?? ''" />
-          <CeIconifyIcon class="size-3" icon="tdesign:chevron-down" />
+          <Icon class="size-3.5" :icon="active?.icon ?? ''" inline />
+          <Icon class="size-3" icon="tdesign:chevron-down" inline />
         </div>
       </Button>
       <template #content>
@@ -29,7 +29,7 @@
             }"
             @click="select(item)"
           >
-            <CeIconifyIcon :icon="item.icon" />{{ item.label }}
+            <Icon :icon="item.icon" inline />{{ item.label }}
           </div>
         </div>
       </template>
@@ -38,12 +38,11 @@
 </template>
 
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 import { Button, Popover, Tooltip } from "ant-design-vue";
 import { computed, shallowRef } from "vue";
 
 import type { RichEditorSelectOption } from "./types";
-
-import { CeIconifyIcon } from "../";
 
 const { tip = undefined, options } = defineProps<{
   /** 提示 */

@@ -17,19 +17,19 @@
         :disabled="!editor.can().chain().focus().undo().run()"
         @click="editor.chain().focus().undo().run()"
       >
-        <template #icon><CeIconifyIcon icon="tdesign:rollback" /></template>
+        <template #icon><Icon icon="tdesign:rollback" inline /></template>
       </RichEditorButton>
       <RichEditorButton
         tip="重做"
         :disabled="!editor.can().chain().focus().redo().run()"
         @click="editor.chain().focus().redo().run()"
       >
-        <template #icon><CeIconifyIcon icon="tdesign:rollfront" /></template>
+        <template #icon><Icon icon="tdesign:rollfront" inline /></template>
       </RichEditorButton>
       <Divider class="!m-0" type="vertical" />
       <!-- 字体样式 -->
       <RichEditorSelect tip="段落/标题" :options="headingOptions">
-        <template #icon><CeIconifyIcon icon="tdesign:clear" /></template>
+        <template #icon><Icon icon="tdesign:clear" inline /></template>
       </RichEditorSelect>
       <RichEditorButton
         tip="加粗"
@@ -38,7 +38,7 @@
         @click="editor.chain().focus().toggleBold().run()"
       >
         <template #icon>
-          <CeIconifyIcon icon="tdesign:textformat-bold" />
+          <Icon icon="tdesign:textformat-bold" inline />
         </template>
       </RichEditorButton>
       <RichEditorButton
@@ -48,7 +48,7 @@
         @click="editor.chain().focus().toggleItalic().run()"
       >
         <template #icon>
-          <CeIconifyIcon icon="tdesign:textformat-italic" />
+          <Icon icon="tdesign:textformat-italic" inline />
         </template>
       </RichEditorButton>
       <RichEditorButton
@@ -58,7 +58,7 @@
         @click="editor.chain().focus().toggleStrike().run()"
       >
         <template #icon>
-          <CeIconifyIcon icon="tdesign:textformat-strikethrough" />
+          <Icon icon="tdesign:textformat-strikethrough" inline />
         </template>
       </RichEditorButton>
       <RichEditorButton
@@ -67,7 +67,7 @@
         :disabled="!editor.can().chain().focus().toggleCode().run()"
         @click="editor.chain().focus().toggleCode().run()"
       >
-        <template #icon><CeIconifyIcon icon="tdesign:code-1" /></template>
+        <template #icon><Icon icon="tdesign:code-1" inline /></template>
       </RichEditorButton>
       <Divider class="!m-0" type="vertical" />
       <!-- 格式/节点清除 -->
@@ -76,14 +76,14 @@
         @click="editor.chain().focus().unsetAllMarks().run()"
       >
         <template #icon>
-          <CeIconifyIcon icon="tdesign:clear-formatting" />
+          <Icon icon="tdesign:clear-formatting" inline />
         </template>
       </RichEditorButton>
       <RichEditorButton
         tip="清除节点"
         @click="editor.chain().focus().clearNodes().run()"
       >
-        <template #icon><CeIconifyIcon icon="tdesign:clear" /></template>
+        <template #icon><Icon icon="tdesign:clear" inline /></template>
       </RichEditorButton>
       <Divider class="!m-0" type="vertical" />
       <!-- 其他样式 -->
@@ -92,7 +92,7 @@
         :active="editor.isActive('bulletList')"
         @click="editor.chain().focus().toggleBulletList().run()"
       >
-        <template #icon><CeIconifyIcon icon="tdesign:list" /></template>
+        <template #icon><Icon icon="tdesign:list" inline /></template>
       </RichEditorButton>
       <RichEditorButton
         tip="有序列表"
@@ -100,7 +100,7 @@
         @click="editor.chain().focus().toggleOrderedList().run()"
       >
         <template #icon>
-          <CeIconifyIcon icon="tdesign:list-numbered" />
+          <Icon icon="tdesign:list-numbered" inline />
         </template>
       </RichEditorButton>
       <RichEditorButton
@@ -108,28 +108,28 @@
         :active="editor.isActive('codeBlock')"
         @click="editor.chain().focus().toggleCodeBlock().run()"
       >
-        <template #icon><CeIconifyIcon icon="tdesign:code" /></template>
+        <template #icon><Icon icon="tdesign:code" inline /></template>
       </RichEditorButton>
       <RichEditorButton
         tip="块引用"
         :active="editor.isActive('blockquote')"
         @click="editor.chain().focus().toggleBlockquote().run()"
       >
-        <template #icon><CeIconifyIcon icon="tdesign:quote" /></template>
+        <template #icon><Icon icon="tdesign:quote" inline /></template>
       </RichEditorButton>
       <RichEditorButton
         tip="分割线"
         @click="editor.chain().focus().setHorizontalRule().run()"
       >
         <template #icon>
-          <CeIconifyIcon icon="tdesign:component-divider-vertical" />
+          <Icon icon="tdesign:component-divider-vertical" inline />
         </template>
       </RichEditorButton>
       <RichEditorButton
         tip="强制换行"
         @click="editor.chain().focus().setHardBreak().run()"
       >
-        <template #icon><CeIconifyIcon icon="tdesign:enter" /></template>
+        <template #icon><Icon icon="tdesign:enter" inline /></template>
       </RichEditorButton>
       <RichEditorColor
         icon="tdesign:textformat-color"
@@ -137,7 +137,7 @@
         @confirm="setTextColor"
       />
       <RichEditorButton tip="添加图片" @click="addImage()">
-        <template #icon><CeIconifyIcon icon="tdesign:image-add" /></template>
+        <template #icon><Icon icon="tdesign:image-add" inline /></template>
       </RichEditorButton>
       <input
         ref="imageUploadRef"
@@ -157,6 +157,7 @@
 </template>
 
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 import Image from "@tiptap/extension-image";
 import { ListItem } from "@tiptap/extension-list";
 import { Color, TextStyle } from "@tiptap/extension-text-style";
@@ -175,7 +176,6 @@ import {
 
 import type { RichEditorSelectOption } from "./types";
 
-import { CeIconifyIcon } from "../";
 import RichEditorButton from "./Button.vue";
 import RichEditorColor from "./Color.vue";
 import { ImageUpload } from "./node/ImageUpload";

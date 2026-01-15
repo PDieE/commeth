@@ -20,12 +20,8 @@ export default defineConfig({
         "virtual:uno.css",
         "ant-design-vue",
         "@iconify/vue",
-        "@vueuse/core",
-        "es-toolkit",
         "@commeth/utils",
-        "@commeth/hooks",
-        "pretty-bytes",
-        "image-dimensions",
+        /^@tiptap\//,
       ],
       output: [
         {

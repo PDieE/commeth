@@ -117,27 +117,6 @@ importers:
       '@iconify/vue':
         specifier: ^5.0.0
         version: 5.0.0(vue@3.5.25(typescript@5.9.3))
-      '@tiptap/core':
-        specifier: ^3.14.0
-        version: 3.14.0(@tiptap/pm@3.14.0)
-      '@tiptap/extension-image':
-        specifier: ^3.14.0
-        version: 3.14.0(@tiptap/core@3.14.0(@tiptap/pm@3.14.0))
-      '@tiptap/extension-list':
-        specifier: ^3.14.0
-        version: 3.14.0(@tiptap/core@3.14.0(@tiptap/pm@3.14.0))(@tiptap/pm@3.14.0)
-      '@tiptap/extension-text-style':
-        specifier: ^3.14.0
-        version: 3.14.0(@tiptap/core@3.14.0(@tiptap/pm@3.14.0))
-      '@tiptap/pm':
-        specifier: ^3.14.0
-        version: 3.14.0
-      '@tiptap/starter-kit':
-        specifier: ^3.14.0
-        version: 3.14.0
-      '@tiptap/vue-3':
-        specifier: ^3.14.0
-        version: 3.14.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.14.0(@tiptap/pm@3.14.0))(@tiptap/pm@3.14.0)(vue@3.5.25(typescript@5.9.3))
       '@vueuse/core':
         specifier: ^14.1.0
         version: 14.1.0(vue@3.5.25(typescript@5.9.3))
@@ -169,6 +148,46 @@ importers:
       vue:
         specifier: ^3.5.0
         version: 3.5.25(typescript@5.9.3)
+
+  packages/rich-editor:
+    dependencies:
+      '@commeth/utils':
+        specifier: ^0.0.1
+        version: 0.0.1(vue@3.5.25(typescript@5.9.3))
+      '@iconify/vue':
+        specifier: ^5.0.0
+        version: 5.0.0(vue@3.5.25(typescript@5.9.3))
+      '@tiptap/core':
+        specifier: ^3.14.0
+        version: 3.14.0(@tiptap/pm@3.14.0)
+      '@tiptap/extension-image':
+        specifier: ^3.14.0
+        version: 3.14.0(@tiptap/core@3.14.0(@tiptap/pm@3.14.0))
+      '@tiptap/extension-list':
+        specifier: ^3.14.0
+        version: 3.14.0(@tiptap/core@3.14.0(@tiptap/pm@3.14.0))(@tiptap/pm@3.14.0)
+      '@tiptap/extension-text-style':
+        specifier: ^3.14.0
+        version: 3.14.0(@tiptap/core@3.14.0(@tiptap/pm@3.14.0))
+      '@tiptap/pm':
+        specifier: ^3.14.0
+        version: 3.14.0
+      '@tiptap/starter-kit':
+        specifier: ^3.14.0
+        version: 3.14.0
+      '@tiptap/vue-3':
+        specifier: ^3.14.0
+        version: 3.14.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.14.0(@tiptap/pm@3.14.0))(@tiptap/pm@3.14.0)(vue@3.5.25(typescript@5.9.3))
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.25(typescript@5.9.3)
+    devDependencies:
+      ant-design-vue:
+        specifier: ^4.2.6
+        version: 4.2.6(vue@3.5.25(typescript@5.9.3))
+      vite-plugin-lib-inject-css:
+        specifier: ^2.2.2
+        version: 2.2.2(vite@7.2.7(@types/node@25.0.1)(jiti@2.6.1)(sass@1.97.1))
 
   packages/utils:
     dependencies:

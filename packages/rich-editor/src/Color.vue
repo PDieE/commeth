@@ -10,11 +10,7 @@
     >
       <t-button variant="text" size="small" @click="toSelect()">
         <template #icon>
-          <CeIconifyIcon
-            class="t-icon"
-            :style="{ color: color }"
-            :icon="icon"
-          />
+          <Icon class="t-icon" :style="{ color: color }" :icon="icon" inline />
         </template>
       </t-button>
       <template #content>
@@ -28,9 +24,8 @@
 </template>
 
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 import { shallowRef } from "vue";
-
-import { CeIconifyIcon } from "../";
 
 const {
   icon,
