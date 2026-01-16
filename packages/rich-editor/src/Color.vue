@@ -1,31 +1,60 @@
 <template>
-  <t-tooltip :content="tip" :disabled="popupVisible" placement="bottom">
-    <t-popup
-      :visible="popupVisible"
-      overlay-inner-class-name="!p-0"
-      destroy-on-close
-      trigger="mousedown"
-      placement="bottom-left"
-      @visible-change="close"
-    >
-      <t-button variant="text" size="small" @click="toSelect()">
-        <template #icon>
-          <Icon class="t-icon" :style="{ color: color }" :icon="icon" inline />
-        </template>
-      </t-button>
-      <template #content>
-        <t-color-picker-panel v-model="innerColor" />
-        <div class="text-right pt-1 pb-3 px-3">
-          <t-button size="small" @click="confirm">确定</t-button>
-        </div>
-      </template>
-    </t-popup>
-  </t-tooltip>
+  <TooltipRoot :delay-duration="0">
+    <PopoverRoot>
+      <TooltipTrigger as-child>
+        <PopoverTrigger as-child>
+          <Button>
+            <template #icon>
+              <Icon
+                class="size-4"
+                :style="{ color: color }"
+                :icon="icon"
+                inline
+              />
+            </template>
+          </Button>
+        </PopoverTrigger>
+      </TooltipTrigger>
+
+      <Tooltip :tip="tip" />
+
+      <PopoverPortal>
+        <PopoverContent
+          class="z-50 w-56 overflow-hidden rounded-md border border-gray-100 bg-white p-3 shadow-lg outline-none animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+          side="bottom"
+          align="start"
+          :side-offset="5"
+        >
+          <SketchPicker v-model="innerColor" />
+          <button
+            class="flex-1 h-7 text-xs rounded-3px border border-gray-200 hover:bg-gray-50 transition-all font-medium text-gray-600"
+            @click="confirm()"
+          >
+            确认
+          </button>
+        </PopoverContent>
+      </PopoverPortal>
+    </PopoverRoot>
+  </TooltipRoot>
 </template>
 
 <script setup lang="ts">
+import "vue-color/style.css";
 import { Icon } from "@iconify/vue";
+import { cloneDeep } from "es-toolkit";
+import {
+  PopoverContent,
+  PopoverPortal,
+  PopoverRoot,
+  PopoverTrigger,
+  TooltipRoot,
+  TooltipTrigger,
+} from "reka-ui";
 import { shallowRef } from "vue";
+import { SketchPicker } from "vue-color";
+
+import Button from "./Button.vue";
+import Tooltip from "./Tooltip.vue";
 
 const {
   icon,
@@ -53,29 +82,10 @@ const emits = defineEmits<{
  * ====================
  */
 /** 选择框popup是否显示 */
-const popupVisible = shallowRef(false);
-const innerColor = shallowRef<string>();
-/** 前往选择 */
-function toSelect() {
-  innerColor.value = color ?? "#000000";
-  popupVisible.value = true;
-}
-/**
- * 选择选项
- * @param option 选项
- */
+const innerColor = shallowRef<string>("#000000");
+/** 确认颜色 */
 function confirm() {
-  emits("confirm", innerColor.value);
-  popupVisible.value = false;
-}
-/**
- * 关闭选择框
- * @param visible 是否显示
- */
-function close(visible: boolean) {
-  if (!visible) {
-    popupVisible.value = false;
-  }
+  emits("confirm", cloneDeep(innerColor.value));
 }
 </script>
 

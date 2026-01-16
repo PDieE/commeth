@@ -17,146 +17,149 @@
       '--brand-color-active': themeColor.brandActive,
     }"
   >
-    <div
-      class="flex flex-wrap items-center gap-2 p-2 border-0 border-b border-[--component-border] border-solid sticky top-0 bg-white z-1"
-    >
-      <!-- 撤销/重做 -->
-      <RichEditorButton
-        tip="撤销"
-        :disabled="!editor.can().chain().focus().undo().run()"
-        @click="editor.chain().focus().undo().run()"
+    <TooltipProvider>
+      <ToolbarRoot
+        class="flex flex-wrap items-center gap-1 p-1 border-0 border-b border-[--component-border] border-solid sticky top-0 bg-white z-1"
       >
-        <template #icon><Icon icon="tdesign:rollback" inline /></template>
-      </RichEditorButton>
-      <RichEditorButton
-        tip="重做"
-        :disabled="!editor.can().chain().focus().redo().run()"
-        @click="editor.chain().focus().redo().run()"
-      >
-        <template #icon><Icon icon="tdesign:rollfront" inline /></template>
-      </RichEditorButton>
-      <Divider class="!m-0" type="vertical" />
-      <!-- 字体样式 -->
-      <RichEditorSelect tip="段落/标题" :options="headingOptions">
-        <template #icon><Icon icon="tdesign:clear" inline /></template>
-      </RichEditorSelect>
-      <RichEditorButton
-        tip="加粗"
-        :active="editor.isActive('bold')"
-        :disabled="!editor.can().chain().focus().toggleBold().run()"
-        @click="editor.chain().focus().toggleBold().run()"
-      >
-        <template #icon>
-          <Icon icon="tdesign:textformat-bold" inline />
-        </template>
-      </RichEditorButton>
-      <RichEditorButton
-        tip="斜体"
-        :active="editor.isActive('italic')"
-        :disabled="!editor.can().chain().focus().toggleItalic().run()"
-        @click="editor.chain().focus().toggleItalic().run()"
-      >
-        <template #icon>
-          <Icon icon="tdesign:textformat-italic" inline />
-        </template>
-      </RichEditorButton>
-      <RichEditorButton
-        tip="删除线"
-        :active="editor.isActive('strike')"
-        :disabled="!editor.can().chain().focus().toggleStrike().run()"
-        @click="editor.chain().focus().toggleStrike().run()"
-      >
-        <template #icon>
-          <Icon icon="tdesign:textformat-strikethrough" inline />
-        </template>
-      </RichEditorButton>
-      <RichEditorButton
-        tip="行内代码"
-        :active="editor.isActive('code')"
-        :disabled="!editor.can().chain().focus().toggleCode().run()"
-        @click="editor.chain().focus().toggleCode().run()"
-      >
-        <template #icon><Icon icon="tdesign:code-1" inline /></template>
-      </RichEditorButton>
-      <Divider class="!m-0" type="vertical" />
-      <!-- 格式/节点清除 -->
-      <RichEditorButton
-        tip="清除格式"
-        @click="editor.chain().focus().unsetAllMarks().run()"
-      >
-        <template #icon>
-          <Icon icon="tdesign:clear-formatting" inline />
-        </template>
-      </RichEditorButton>
-      <RichEditorButton
-        tip="清除节点"
-        @click="editor.chain().focus().clearNodes().run()"
-      >
-        <template #icon><Icon icon="tdesign:clear" inline /></template>
-      </RichEditorButton>
-      <Divider class="!m-0" type="vertical" />
-      <!-- 其他样式 -->
-      <RichEditorButton
-        tip="无序列表"
-        :active="editor.isActive('bulletList')"
-        @click="editor.chain().focus().toggleBulletList().run()"
-      >
-        <template #icon><Icon icon="tdesign:list" inline /></template>
-      </RichEditorButton>
-      <RichEditorButton
-        tip="有序列表"
-        :active="editor.isActive('orderedList')"
-        @click="editor.chain().focus().toggleOrderedList().run()"
-      >
-        <template #icon>
-          <Icon icon="tdesign:list-numbered" inline />
-        </template>
-      </RichEditorButton>
-      <RichEditorButton
-        tip="代码块"
-        :active="editor.isActive('codeBlock')"
-        @click="editor.chain().focus().toggleCodeBlock().run()"
-      >
-        <template #icon><Icon icon="tdesign:code" inline /></template>
-      </RichEditorButton>
-      <RichEditorButton
-        tip="块引用"
-        :active="editor.isActive('blockquote')"
-        @click="editor.chain().focus().toggleBlockquote().run()"
-      >
-        <template #icon><Icon icon="tdesign:quote" inline /></template>
-      </RichEditorButton>
-      <RichEditorButton
-        tip="分割线"
-        @click="editor.chain().focus().setHorizontalRule().run()"
-      >
-        <template #icon>
-          <Icon icon="tdesign:component-divider-vertical" inline />
-        </template>
-      </RichEditorButton>
-      <RichEditorButton
-        tip="强制换行"
-        @click="editor.chain().focus().setHardBreak().run()"
-      >
-        <template #icon><Icon icon="tdesign:enter" inline /></template>
-      </RichEditorButton>
-      <RichEditorColor
-        icon="tdesign:textformat-color"
-        :color="textColor"
-        @confirm="setTextColor"
-      />
-      <RichEditorButton tip="添加图片" @click="addImage()">
-        <template #icon><Icon icon="tdesign:image-add" inline /></template>
-      </RichEditorButton>
-      <input
-        ref="imageUploadRef"
-        class="hidden"
-        type="file"
-        :accept="imageUpload?.accept || 'image/*'"
-        multiple
-        @change="imageUploadChange"
-      />
-    </div>
+        <!-- 撤销/重做 -->
+        <RichEditorButton
+          tip="撤销"
+          :disabled="!editor.can().chain().focus().undo().run()"
+          @click="editor.chain().focus().undo().run()"
+        >
+          <template #icon><Icon icon="tdesign:rollback" inline /></template>
+        </RichEditorButton>
+        <RichEditorButton
+          tip="重做"
+          :disabled="!editor.can().chain().focus().redo().run()"
+          @click="editor.chain().focus().redo().run()"
+        >
+          <template #icon><Icon icon="tdesign:rollfront" inline /></template>
+        </RichEditorButton>
+        <ToolbarSeparator class="w-px h-4 bg-gray-200 mx-1" />
+        <!-- 字体样式 -->
+        <RichEditorSelect tip="段落/标题" :options="headingOptions">
+          <template #icon><Icon icon="tdesign:clear" inline /></template>
+        </RichEditorSelect>
+        <RichEditorButton
+          tip="加粗"
+          :active="editor.isActive('bold')"
+          :disabled="!editor.can().chain().focus().toggleBold().run()"
+          @click="editor.chain().focus().toggleBold().run()"
+        >
+          <template #icon>
+            <Icon icon="tdesign:textformat-bold" inline />
+          </template>
+        </RichEditorButton>
+        <RichEditorButton
+          tip="斜体"
+          :active="editor.isActive('italic')"
+          :disabled="!editor.can().chain().focus().toggleItalic().run()"
+          @click="editor.chain().focus().toggleItalic().run()"
+        >
+          <template #icon>
+            <Icon icon="tdesign:textformat-italic" inline />
+          </template>
+        </RichEditorButton>
+        <RichEditorButton
+          tip="删除线"
+          :active="editor.isActive('strike')"
+          :disabled="!editor.can().chain().focus().toggleStrike().run()"
+          @click="editor.chain().focus().toggleStrike().run()"
+        >
+          <template #icon>
+            <Icon icon="tdesign:textformat-strikethrough" inline />
+          </template>
+        </RichEditorButton>
+        <RichEditorButton
+          tip="行内代码"
+          :active="editor.isActive('code')"
+          :disabled="!editor.can().chain().focus().toggleCode().run()"
+          @click="editor.chain().focus().toggleCode().run()"
+        >
+          <template #icon><Icon icon="tdesign:code-1" inline /></template>
+        </RichEditorButton>
+        <ToolbarSeparator class="w-px h-4 bg-gray-200 mx-1" />
+        <!-- 格式/节点清除 -->
+        <RichEditorButton
+          tip="清除格式"
+          @click="editor.chain().focus().unsetAllMarks().run()"
+        >
+          <template #icon>
+            <Icon icon="tdesign:clear-formatting" inline />
+          </template>
+        </RichEditorButton>
+        <RichEditorButton
+          tip="清除节点"
+          @click="editor.chain().focus().clearNodes().run()"
+        >
+          <template #icon><Icon icon="tdesign:clear" inline /></template>
+        </RichEditorButton>
+        <ToolbarSeparator class="w-px h-4 bg-gray-200 mx-1" />
+        <!-- 其他样式 -->
+        <RichEditorButton
+          tip="无序列表"
+          :active="editor.isActive('bulletList')"
+          @click="editor.chain().focus().toggleBulletList().run()"
+        >
+          <template #icon><Icon icon="tdesign:list" inline /></template>
+        </RichEditorButton>
+        <RichEditorButton
+          tip="有序列表"
+          :active="editor.isActive('orderedList')"
+          @click="editor.chain().focus().toggleOrderedList().run()"
+        >
+          <template #icon>
+            <Icon icon="tdesign:list-numbered" inline />
+          </template>
+        </RichEditorButton>
+        <RichEditorButton
+          tip="代码块"
+          :active="editor.isActive('codeBlock')"
+          @click="editor.chain().focus().toggleCodeBlock().run()"
+        >
+          <template #icon><Icon icon="tdesign:code" inline /></template>
+        </RichEditorButton>
+        <RichEditorButton
+          tip="块引用"
+          :active="editor.isActive('blockquote')"
+          @click="editor.chain().focus().toggleBlockquote().run()"
+        >
+          <template #icon><Icon icon="tdesign:quote" inline /></template>
+        </RichEditorButton>
+        <RichEditorButton
+          tip="分割线"
+          @click="editor.chain().focus().setHorizontalRule().run()"
+        >
+          <template #icon>
+            <Icon icon="tdesign:component-divider-vertical" inline />
+          </template>
+        </RichEditorButton>
+        <RichEditorButton
+          tip="强制换行"
+          @click="editor.chain().focus().setHardBreak().run()"
+        >
+          <template #icon><Icon icon="tdesign:enter" inline /></template>
+        </RichEditorButton>
+        <RichEditorColor
+          icon="tdesign:textformat-color"
+          :color="textColor"
+          tip="字体颜色"
+          @confirm="setTextColor"
+        />
+        <RichEditorButton tip="添加图片" @click="addImage()">
+          <template #icon><Icon icon="tdesign:image-add" inline /></template>
+        </RichEditorButton>
+        <input
+          ref="imageUploadRef"
+          class="hidden"
+          type="file"
+          :accept="imageUpload?.accept || 'image/*'"
+          multiple
+          @change="imageUploadChange"
+        />
+      </ToolbarRoot>
+    </TooltipProvider>
     <editor-content
       class="p-2 min-h-[var(--content-min-height)] max-h-[var(--content-max-height)] h-[var(--content-height)] overflow-y-auto"
       :style="contentStyle"
@@ -173,7 +176,7 @@ import { ListItem } from "@tiptap/extension-list";
 import { Color, TextStyle } from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
 import { Editor, EditorContent, type EditorEvents } from "@tiptap/vue-3";
-import { Divider } from "ant-design-vue";
+import { ToolbarRoot, ToolbarSeparator, TooltipProvider } from "reka-ui";
 import {
   computed,
   onBeforeUnmount,

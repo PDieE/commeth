@@ -1,33 +1,42 @@
 <template>
-  <div>
-    <Tooltip :title="tip" placement="bottom">
-      <Button
-        :type="active ? 'primary' : 'text'"
-        size="small"
+  <TooltipRoot>
+    <TooltipTrigger as-child>
+      <ToolbarButton
+        class="size-8 flex items-center justify-center rounded-0.75 transition-all outline-none border-none cursor-pointer"
+        :class="{
+          'text-[var(--brand-color)] bg-[var(--brand-color-light)] hover:bg-gray-100':
+            active,
+          'bg-transparent  text-gray-600 hover:bg-gray-100':
+            !active && !disabled,
+          'opacity-50 cursor-not-allowed': disabled,
+        }"
         :disabled="disabled"
+        @click="emits('click')"
       >
-        <template v-if="$slots.icon" #icon>
-          <div class="t-icon"><slot name="icon" /></div>
-        </template>
-      </Button>
-    </Tooltip>
-  </div>
+        <slot name="icon" />
+      </ToolbarButton>
+    </TooltipTrigger>
+
+    <Tooltip :tip="tip" />
+  </TooltipRoot>
 </template>
 
 <script setup lang="ts">
-import { Button, Tooltip } from "ant-design-vue";
+import { TooltipRoot, ToolbarButton, TooltipTrigger } from "reka-ui";
 
-const {
-  tip = undefined,
-  active,
-  disabled,
-} = defineProps<{
+import Tooltip from "./Tooltip.vue";
+
+const { tip, active, disabled } = defineProps<{
   /** 提示 */
   tip?: string;
   /** 是否激活 */
   active?: boolean;
   /** 是否禁用 */
   disabled?: boolean;
+}>();
+const emits = defineEmits<{
+  /** 点击事件 */
+  click: [];
 }>();
 </script>
 

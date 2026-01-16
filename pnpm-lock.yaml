@@ -193,12 +193,18 @@ importers:
       culori:
         specifier: ^4.0.2
         version: 4.0.2
+      es-toolkit:
+        specifier: ^1.43.0
+        version: 1.43.0
       reka-ui:
         specifier: ^2.7.0
         version: 2.7.0(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
       vue:
         specifier: ^3.5.0
         version: 3.5.25(typescript@5.9.3)
+      vue-color:
+        specifier: ^3.3.3
+        version: 3.3.3(vue@3.5.25(typescript@5.9.3))
     devDependencies:
       '@types/culori':
         specifier: ^4.0.1
@@ -1851,6 +1857,9 @@ packages:
     resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
     hasBin: true
 
+  material-colors@1.2.6:
+    resolution: {integrity: sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==}
+
   mdn-data@2.12.2:
     resolution: {integrity: sha512-IEn+pegP1aManZuckezWCO+XZQDplx1366JoVhTpMpBB1sPey/SbveZQUosKiKiGYjg1wH4pMlNgXbCiYgihQA==}
 
@@ -2179,6 +2188,9 @@ packages:
     resolution: {integrity: sha512-B71/4oyj61iNH0KeCamLuE2rmKuTO5byTOSVwECM5FA7TiAiAW+UqTKZ9ERueC4qvgSttUhdmq1mXC3kJqGX7A==}
     engines: {node: '>=12.22'}
 
+  tinycolor2@1.6.0:
+    resolution: {integrity: sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==}
+
   tinyexec@1.0.2:
     resolution: {integrity: sha512-W/KYk+NFhkmsYpuHq5JykngiOCnxeVL8v8dFnqxSD8qEEdRfXk1SDM6JzNqcERbcGYj9tMrDQBYV9cjgnunFIg==}
     engines: {node: '>=18'}
@@ -2351,6 +2363,11 @@ packages:
 
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
+
+  vue-color@3.3.3:
+    resolution: {integrity: sha512-FW/9JXFbCHfFEGv6SFUuK/SE+K61pHoL7lxJMQXcU+Zt7s36Ui1/tMDc3vzGXPrxxRBB+NSzFt+71nEaUJ29dQ==}
+    peerDependencies:
+      vue: '>=2.7.0 <4.0.0'
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -4123,6 +4140,8 @@ snapshots:
       punycode.js: 2.3.1
       uc.micro: 2.1.0
 
+  material-colors@1.2.6: {}
+
   mdn-data@2.12.2: {}
 
   mdurl@2.0.0: {}
@@ -4499,6 +4518,8 @@ snapshots:
 
   throttle-debounce@5.0.2: {}
 
+  tinycolor2@1.6.0: {}
+
   tinyexec@1.0.2: {}
 
   tinyglobby@0.2.15:
@@ -4663,6 +4684,12 @@ snapshots:
       sass: 1.97.1
 
   vscode-uri@3.1.0: {}
+
+  vue-color@3.3.3(vue@3.5.25(typescript@5.9.3)):
+    dependencies:
+      material-colors: 1.2.6
+      tinycolor2: 1.6.0
+      vue: 3.5.25(typescript@5.9.3)
 
   vue-demi@0.14.10(vue@3.5.25(typescript@5.9.3)):
     dependencies:

@@ -21,6 +21,7 @@ export default defineConfig({
         "ant-design-vue",
         "@iconify/vue",
         "@vueuse/core",
+        "es-toolkit",
         "@commeth/utils",
         /^@tiptap\//,
         "reka-ui",
