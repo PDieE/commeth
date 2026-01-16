@@ -20,18 +20,25 @@
 
       <PopoverPortal>
         <PopoverContent
-          class="z-50 w-56 overflow-hidden rounded-md border border-gray-100 bg-white p-3 shadow-lg outline-none animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+          class="z-50 w-56 overflow-hidden animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
           side="bottom"
           align="start"
           :side-offset="5"
         >
-          <SketchPicker v-model="innerColor" />
-          <button
-            class="flex-1 h-7 text-xs rounded-3px border border-gray-200 hover:bg-gray-50 transition-all font-medium text-gray-600"
-            @click="confirm()"
+          <div
+            class="rounded-md border border-gray-100 bg-white p-3 shadow-lg outline-none"
           >
-            确认
-          </button>
+            <SketchPicker
+              v-model="innerColor"
+              class="border-none p-0 shadow-none"
+            />
+            <button
+              class="flex-1 h-7 text-xs rounded-3px border border-gray-200 hover:bg-gray-50 transition-all font-medium text-gray-600"
+              @click="confirm()"
+            >
+              确认
+            </button>
+          </div>
         </PopoverContent>
       </PopoverPortal>
     </PopoverRoot>
