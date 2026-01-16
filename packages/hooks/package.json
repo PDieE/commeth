@@ -1,6 +1,6 @@
 {
   "name": "@commeth/hooks",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "files": [
@@ -13,7 +13,9 @@
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "@vueuse/core": "^14.1.0"
+    "@vueuse/core": "^14.1.0",
+    "image-dimensions": "^2.5.0",
+    "pretty-bytes": "^7.1.0"
   },
   "devDependencies": {}
 }

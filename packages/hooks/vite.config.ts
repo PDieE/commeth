@@ -1,6 +1,6 @@
-import { defineConfig } from "vite";
-import dts from "unplugin-dts/vite";
 import { resolve } from "path";
+import dts from "unplugin-dts/vite";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   build: {
@@ -11,7 +11,7 @@ export default defineConfig({
       fileName: "index",
     },
     rollupOptions: {
-      external: ["vue", "@vueuse/core"],
+      external: ["vue", "@vueuse/core", "pretty-bytes", "image-dimensions"],
       output: [
         {
           format: "es",

@@ -20,8 +20,10 @@ export default defineConfig({
         "virtual:uno.css",
         "ant-design-vue",
         "@iconify/vue",
+        "@vueuse/core",
         "@commeth/utils",
         /^@tiptap\//,
+        "reka-ui",
       ],
       output: [
         {

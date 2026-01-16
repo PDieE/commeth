@@ -143,13 +143,14 @@
         ref="imageUploadRef"
         class="hidden"
         type="file"
-        accept="image/*"
+        :accept="imageUpload?.accept || 'image/*'"
         multiple
         @change="imageUploadChange"
       />
     </div>
     <editor-content
-      class="p-2 min-h-50 max-h-100 overflow-y-auto"
+      class="p-2 min-h-[var(--content-min-height)] max-h-[var(--content-max-height)] h-[var(--content-height)] overflow-y-auto"
+      :style="contentStyle"
       :editor="editor"
       placeholder="请输入内容"
     />
@@ -168,16 +169,18 @@ import {
   computed,
   onBeforeUnmount,
   onMounted,
+  provide,
   ref,
   shallowRef,
   useTemplateRef,
   watch,
 } from "vue";
 
-import type { RichEditorSelectOption } from "./types";
+import type { RichEditorProps, RichEditorSelectOption } from "./types";
 
 import RichEditorButton from "./Button.vue";
 import RichEditorColor from "./Color.vue";
+import { useProvideBridgeStore } from "./injectionState";
 import { ImageUpload } from "./node/ImageUpload";
 import RichEditorSelect from "./Select.vue";
 
@@ -190,6 +193,8 @@ watch(innerValue, (val) => {
 
   editor.value?.commands.setContent(val);
 });
+const { contentHeight = { min: 200, max: 400 }, imageUpload } =
+  defineProps<RichEditorProps>();
 
 onMounted(() => {
   init();
@@ -205,6 +210,30 @@ onBeforeUnmount(() => {
  *       基本逻辑
  * ====================
  */
+useProvideBridgeStore({ imageUpload });
+/** 内容主题样式 */
+const contentStyle = computed(() => {
+  if (typeof contentHeight === "number") {
+    return {
+      "--content-min-height": "auto",
+      "--content-max-height": "auto",
+      "--content-height": `${contentHeight}px`,
+    };
+  }
+  if (typeof contentHeight === "string") {
+    return {
+      "--content-min-height": "auto",
+      "--content-max-height": "auto",
+      "--content-height": contentHeight,
+    };
+  }
+  return {
+    "--content-min-height": `${contentHeight.min}px`,
+    "--content-max-height": `${contentHeight.max}px`,
+    "--content-height": "auto",
+  };
+});
+provide("contentStyle", contentStyle);
 /** 编辑器实例 */
 const editor = ref<Editor>();
 /** 初始化编辑器 */
@@ -345,12 +374,9 @@ function addImage() {
     return;
   }
   imageUploadRef.value.value = "";
-  // imageUploadRef.value.files = null;
   imageUploadRef.value.click();
-  // editor.value?.chain().setImageUpload({}).run();
 }
-function imageUploadChange(e: Event) {
-  console.log(e);
+function imageUploadChange() {
   if (!imageUploadRef.value) {
     return;
   }
@@ -358,10 +384,7 @@ function imageUploadChange(e: Event) {
   if (!files || !files.length) {
     return;
   }
-  console.log(files);
   for (const file of files) {
-    console.log(file);
-
     editor.value?.chain().focus().setImageUpload({ file }).run();
     editor.value
       ?.chain()
@@ -371,23 +394,15 @@ function imageUploadChange(e: Event) {
       })
       .run();
   }
-
-  // const files = imageUploadRef.value?.files;
-  // if (!files || files.length === 0) {
-  //   return;
-  // }
-  // const file = files[0];
-  // const reader = new FileReader();
-  // reader.readAsDataURL(file);
-  // reader.onloadend = () => {
-  //   const base64 = reader.result?.toString().split(",")[1] || "";
-  //   editor.value?.chain().focus().setImage({ src: base64 }).run();
-  // };
 }
 </script>
 
 <style lang="scss" scoped>
 :deep(.tiptap) {
+  min-height: var(--content-min-height);
+  max-height: var(--content-max-height);
+  height: var(--content-height);
+
   :first-child {
     margin-top: 0;
   }

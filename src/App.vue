@@ -26,7 +26,16 @@
   >
     <input v-model="filterFormData.name" placeholder="服务名称" />
   </CeFilterForm>
-  <CeRichEditor />
+  <CeRichEditor
+    :imageUpload="{
+      request,
+      accept: '.png,.jpg,.jpeg',
+      sizeLimit: 1024 * 1024,
+      minImageSize: 1000,
+      maxImageSize: 2000,
+      imageRatio: [1280, 1707],
+    }"
+  />
 </template>
 
 <script setup lang="ts">
@@ -46,12 +55,21 @@ AMapService.init({
   key: "6b342ef0a0bc008d7c3831aab7e4f4d1",
   securityJsCode: "8712ec1f8864c180abafddd4616877df",
 });
-function request(options: { onSuccess?: (v: string) => void }) {
-  setTimeout(() => {
-    options.onSuccess?.(
-      "https://public.house-keeper.cn/static/dev/0d7e4316879345aa96d9d381e4af109a.jpg",
-    );
-  }, 100);
+function request(options: {
+  onSuccess?: (v: string) => void;
+  onProgress?: (v: { percent: number }) => void;
+}) {
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += 10;
+    options.onProgress?.({ percent: progress });
+    if (progress >= 100) {
+      options.onSuccess?.(
+        "https://public.house-keeper.cn/static/dev/0d7e4316879345aa96d9d381e4af109a.jpg",
+      );
+      clearInterval(interval);
+    }
+  }, 500);
 }
 const filterFormData = ref({ name: "" });
 </script>
