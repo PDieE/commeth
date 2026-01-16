@@ -24,6 +24,7 @@ export default defineConfig({
         "@commeth/utils",
         /^@tiptap\//,
         "reka-ui",
+        "culori",
       ],
       output: [
         {

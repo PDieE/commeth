@@ -23,6 +23,23 @@ export interface RichEditorProps {
     /** 图片比例 */
     imageRatio?: [number, number];
   };
+  /** 主题 */
+  theme?: {
+    /** 边框色 */
+    border?: string;
+    /** 品牌色 */
+    brand?: string;
+    /** 品牌色 - 浅色 */
+    brandLight: string;
+    /** 品牌色 - 焦点色 */
+    brandFocus: string;
+    /** 品牌色 - 禁用色 */
+    brandDisabled: string;
+    /** 品牌色 - 悬停色 */
+    brandHover: string;
+    /** 品牌色 - 激活色 */
+    brandActive: string;
+  };
 }
 
 /** 下拉选项 */

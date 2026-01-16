@@ -1,15 +1,24 @@
 <template>
-  {{ innerValue }}
   <div
     v-if="editor"
-    class="border border-border border-solid rounded-3px overflow-hidden transition-all hover:border-brand"
+    class="border border-solid rounded-3px overflow-hidden transition-all hover:border-brand"
     :class="{
-      'border-brand shadow-[0_0_0_2px] shadow-brand-color-focus':
+      'border-[--brand-color-focus] shadow-[0_0_0_2px_var(--brand-color-light)]':
         editor?.isFocused,
+      'border-[--component-border]': !editor?.isFocused,
+    }"
+    :style="{
+      '--component-border': themeColor.border,
+      '--brand-color-light': themeColor.brandLight,
+      '--brand-color-focus': themeColor.brandFocus,
+      '--brand-color-disabled': themeColor.brandDisabled,
+      '--brand-color-hover': themeColor.brandHover,
+      '--brand-color': themeColor.brand,
+      '--brand-color-active': themeColor.brandActive,
     }"
   >
     <div
-      class="flex flex-wrap items-center gap-2 p-2 border-0 border-b border-border border-solid sticky top-0 bg-white z-1"
+      class="flex flex-wrap items-center gap-2 p-2 border-0 border-b border-[--component-border] border-solid sticky top-0 bg-white z-1"
     >
       <!-- 撤销/重做 -->
       <RichEditorButton
@@ -180,6 +189,7 @@ import type { RichEditorProps, RichEditorSelectOption } from "./types";
 
 import RichEditorButton from "./Button.vue";
 import RichEditorColor from "./Color.vue";
+import { createThemeColor } from "./createThemeColor";
 import { useProvideBridgeStore } from "./injectionState";
 import { ImageUpload } from "./node/ImageUpload";
 import RichEditorSelect from "./Select.vue";
@@ -193,8 +203,11 @@ watch(innerValue, (val) => {
 
   editor.value?.commands.setContent(val);
 });
-const { contentHeight = { min: 200, max: 400 }, imageUpload } =
-  defineProps<RichEditorProps>();
+const {
+  contentHeight = { min: 200, max: 400 },
+  imageUpload,
+  theme,
+} = defineProps<RichEditorProps>();
 
 onMounted(() => {
   init();
@@ -211,6 +224,34 @@ onBeforeUnmount(() => {
  * ====================
  */
 useProvideBridgeStore({ imageUpload });
+const themeColor = computed(() => {
+  const brand = theme?.brand || "#0052D9";
+  let themeBrand = {
+    light: theme?.brandLight,
+    focus: theme?.brandFocus,
+    disabled: theme?.brandDisabled,
+    hover: theme?.brandHover,
+    active: theme?.brandActive,
+  };
+  if (
+    !themeBrand?.light ||
+    !themeBrand?.focus ||
+    !themeBrand?.disabled ||
+    !themeBrand?.hover ||
+    !themeBrand?.active
+  ) {
+    themeBrand = createThemeColor(brand);
+  }
+  return {
+    border: theme?.border || "#cac9c9",
+    brand,
+    brandLight: themeBrand.light,
+    brandFocus: themeBrand.focus,
+    brandDisabled: themeBrand.disabled,
+    brandHover: themeBrand.hover,
+    brandActive: themeBrand.active,
+  };
+});
 /** 内容主题样式 */
 const contentStyle = computed(() => {
   if (typeof contentHeight === "number") {
@@ -256,8 +297,8 @@ function init() {
             "bottom-right",
             "bottom-left",
           ],
-          minWidth: 10,
-          minHeight: 10,
+          minWidth: 30,
+          minHeight: 30,
           alwaysPreserveAspectRatio: true,
         },
       }),
@@ -500,26 +541,42 @@ function imageUploadChange() {
     display: block;
     height: auto;
     max-width: 100%;
+  }
 
+  [data-resize-container] {
     &.ProseMirror-selectednode {
-      outline: 3px solid #6a00f5;
+      [data-resize-wrapper] {
+        border-radius: 3px;
+        outline: 3px solid var(--brand-color);
+      }
+    }
+
+    [data-resize-wrapper] {
+      outline: 3px solid transparent;
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+      &:hover {
+        outline: 3px solid var(--brand-color);
+        border-radius: 3px;
+
+        [data-resize-handle] {
+          opacity: 1;
+        }
+      }
     }
   }
 
-  [data-resize-wrapper] {
-    outline: 3px solid transparent;
-    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-
-    &:hover {
-      outline: 3px solid var(--color-primary-border-hover);
-      border-radius: 3px;
-    }
-  }
-
+  /* 图片尺寸控制 */
   [data-resize-handle] {
     position: absolute;
     z-index: 10;
+    opacity: 0;
     transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--brand-color);
+
+    &:hover {
+      background: var(--brand-color-active);
+    }
 
     /* Corner handles */
     &[data-resize-handle="top-left"],
@@ -530,11 +587,6 @@ function imageUploadChange() {
       height: 10px;
       border-radius: 999px;
       border: 1px solid #fff;
-      background: var(--color-primary);
-
-      &:hover {
-        background: var(--color-primary-hover);
-      }
     }
 
     &[data-resize-handle="top-left"] {
@@ -566,42 +618,40 @@ function imageUploadChange() {
     &[data-resize-handle="bottom"],
     &[data-resize-handle="right"],
     &[data-resize-handle="left"] {
-      &:hover {
-        background: var(--color-primary-hover);
-      }
+      border-radius: 999px;
     }
 
     &[data-resize-handle="top"],
     &[data-resize-handle="bottom"] {
       height: 6px;
-      left: 8px;
-      right: 8px;
+      left: 20% !important;
+      right: 20% !important;
     }
 
     &[data-resize-handle="top"] {
-      top: -3px;
+      top: 10px !important;
       cursor: ns-resize;
     }
 
     &[data-resize-handle="bottom"] {
-      bottom: -3px;
+      bottom: 10px !important;
       cursor: ns-resize;
     }
 
     &[data-resize-handle="left"],
     &[data-resize-handle="right"] {
       width: 6px;
-      top: 8px;
-      bottom: 8px;
+      top: 20% !important;
+      bottom: 20% !important;
     }
 
     &[data-resize-handle="left"] {
-      left: -3px;
+      left: 10px !important;
       cursor: ew-resize;
     }
 
     &[data-resize-handle="right"] {
-      right: -3px;
+      right: 10px !important;
       cursor: ew-resize;
     }
   }

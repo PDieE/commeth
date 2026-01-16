@@ -69,7 +69,7 @@ function request(options: {
       );
       clearInterval(interval);
     }
-  }, 500);
+  }, 100);
 }
 const filterFormData = ref({ name: "" });
 </script>
