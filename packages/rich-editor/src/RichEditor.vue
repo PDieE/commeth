@@ -1,6 +1,7 @@
 <template>
   <div
     v-if="editor"
+    :id="id"
     class="border border-solid rounded-3px overflow-hidden transition-all hover:border-brand"
     :class="{
       'border-[--brand-color-focus] shadow-[0_0_0_2px_var(--brand-color-light)]':
@@ -176,6 +177,7 @@ import { ListItem } from "@tiptap/extension-list";
 import { Color, TextStyle } from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
 import { Editor, EditorContent, type EditorEvents } from "@tiptap/vue-3";
+import { uniqueId } from "es-toolkit/compat";
 import { ToolbarRoot, ToolbarSeparator, TooltipProvider } from "reka-ui";
 import {
   computed,
@@ -226,7 +228,8 @@ onBeforeUnmount(() => {
  *       基本逻辑
  * ====================
  */
-useProvideBridgeStore({ imageUpload });
+const id = shallowRef(uniqueId("editor_"));
+useProvideBridgeStore({ imageUpload, editorId: id.value });
 const themeColor = computed(() => {
   const brand = theme?.brand || "#0052D9";
   let themeBrand = {
