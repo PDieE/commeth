@@ -7,11 +7,12 @@
   </a>
 </p>
 
-Commeth Components for Ant Design Vue 是基于Ant Design Vue实现的业务组件库
+Commeth Rich Editor 是基于Tiptap实现的富文本组件
 
 # 🎉 Features
 
-- 基于 Reka 2.7.x
+- 以 Tiptap 3.x 为基础实现
+- UI 采用 Reka 2.7.x
 - 基于 Vue 3.5+
 
 # 📦 Installation
@@ -23,14 +24,42 @@ npm i @commeth/rich-editor
 pnpm add @commeth/rich-editor
 ```
 
+# 📖 Example
+
+[基础示例](https://stackblitz.com/edit/vitejs-vite-8p4jj3iu)
+
 # 🔨 Usage
 
-```js
-import { createApp } from "vue";
+```vue
+<template>
+  <CeRichEditor
+    :imageUpload="{
+      request,
+      accept: '.png,.jpg,.jpeg',
+      sizeLimit: 1024 * 1024,
+      minImageSize: 1000,
+      maxImageSize: 2000,
+      imageRatio: [1280, 1707],
+    }"
+  />
+</template>
+
+<script setup lang="ts">
 import { CeRichEditor } from "@commeth/rich-editor";
 
-import App from "./app.vue";
-
-const app = createApp(App);
-app.use(CeRichEditor);
+function request(options: {
+  onSuccess?: (v: string) => void;
+  onProgress?: (v: { percent: number }) => void;
+}) {
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += 10;
+    options.onProgress?.({ percent: progress });
+    if (progress >= 100) {
+      options.onSuccess?.(URL.createObjectURL(options.file));
+      clearInterval(interval);
+    }
+  }, 100);
+}
+</script>
 ```
