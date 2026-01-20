@@ -14,14 +14,14 @@
     "format:check": "prettier . --check"
   },
   "dependencies": {
-    "@amap/amap-jsapi-loader": "^1.0.1",
     "@commeth/components-antv": "workspace:^",
     "@commeth/hooks": "workspace:^",
+    "@commeth/rich-editor": "workspace:^",
     "@commeth/utils": "workspace:^",
     "@iconify/vue": "^5.0.0",
     "@vueuse/core": "^14.1.0",
-    "es-toolkit": "^1.43.0",
-    "vue": "^3.5.25"
+    "es-toolkit": "^1.44.0",
+    "vue": "^3.5.27"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

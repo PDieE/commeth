@@ -22,10 +22,14 @@ export default defineConfig({
         "@iconify/vue",
         "@vueuse/core",
         "es-toolkit",
+        "es-toolkit/compat",
         "@commeth/utils",
+        "@commeth/hooks",
         /^@tiptap\//,
         "reka-ui",
         "culori",
+        "vue-color",
+        "vue-color/style.css",
       ],
       output: [
         {

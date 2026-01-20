@@ -14,11 +14,11 @@
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "@commeth/hooks": "^0.1.0",
+    "@commeth/hooks": "^0.2.1",
     "@commeth/utils": "^0.1.0",
     "@iconify/vue": "^5.0.0",
     "@vueuse/core": "^14.1.0",
-    "es-toolkit": "^1.43.0",
+    "es-toolkit": "^1.44.0",
     "image-dimensions": "^2.5.0",
     "pretty-bytes": "^7.1.0"
   },

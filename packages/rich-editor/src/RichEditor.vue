@@ -5,8 +5,8 @@
     class="border border-solid rounded-3px overflow-hidden transition-all hover:border-brand"
     :class="{
       'border-[--brand-color-focus] shadow-[0_0_0_2px_var(--brand-color-light)]':
-        editor?.isFocused,
-      'border-[--component-border]': !editor?.isFocused,
+        isFocused,
+      'border-[--component-border]': !isFocused,
     }"
     :style="{
       '--component-border': themeColor.border,
@@ -283,6 +283,7 @@ const contentStyle = computed(() => {
 provide("contentStyle", contentStyle);
 /** 编辑器实例 */
 const editor = ref<Editor>();
+const isFocused = ref(false);
 /** 初始化编辑器 */
 function init() {
   editor.value = new Editor({
@@ -313,6 +314,12 @@ function init() {
     content: innerValue.value,
     onUpdate: () => {
       innerValue.value = editor.value?.getHTML() || "";
+    },
+    onFocus: () => {
+      isFocused.value = true;
+    },
+    onBlur: () => {
+      isFocused.value = false;
     },
     onSelectionUpdate(props) {
       onTextColorSelectionUpdate(props);

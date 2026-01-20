@@ -93,7 +93,7 @@ const removeNode = () => {
   deleteNode();
 };
 const { validateFile } = useFileValidate({
-  accept: bridgeStore?.imageUpload?.accept,
+  accept: bridgeStore?.imageUpload?.accept || "image/*",
   sizeLimit: bridgeStore?.imageUpload?.sizeLimit,
   minImageSize: bridgeStore?.imageUpload?.minImageSize,
   maxImageSize: bridgeStore?.imageUpload?.maxImageSize,
