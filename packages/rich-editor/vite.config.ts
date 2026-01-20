@@ -1,4 +1,5 @@
 import vue from "@vitejs/plugin-vue";
+import { preview } from "@vitest/browser-preview";
 import { resolve } from "path";
 import UnoCSS from "unocss/vite";
 import dts from "unplugin-dts/vite";
@@ -53,4 +54,11 @@ export default defineConfig({
     }),
     libInjectCss(),
   ],
+  test: {
+    browser: {
+      provider: preview(),
+      enabled: true,
+      instances: [{ browser: "chromium" }],
+    },
+  },
 });
