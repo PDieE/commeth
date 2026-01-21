@@ -192,12 +192,12 @@ import {
 
 import type { RichEditorProps, RichEditorSelectOption } from "./types";
 
-import RichEditorButton from "./Button.vue";
-import RichEditorColor from "./Color.vue";
+import RichEditorButton from "./components/Button.vue";
+import RichEditorColor from "./components/Color.vue";
+import RichEditorSelect from "./components/Select.vue";
 import { createThemeColor } from "./createThemeColor";
 import { useProvideBridgeStore } from "./injectionState";
 import { ImageUpload } from "./node/ImageUpload";
-import RichEditorSelect from "./Select.vue";
 
 const innerValue = defineModel<string>("modelValue", { default: "" });
 watch(innerValue, (val) => {
@@ -552,8 +552,8 @@ function imageUploadChange() {
 
   img {
     display: block;
+    width: 100%;
     height: auto;
-    max-width: 100%;
   }
 
   [data-resize-container] {

@@ -50,10 +50,10 @@ import {
 } from "reka-ui";
 import { computed } from "vue";
 
-import type { RichEditorSelectOption } from "./types";
+import type { RichEditorSelectOption } from "../types";
 
+import { useBridgeStore } from "../injectionState";
 import Button from "./Button.vue";
-import { useBridgeStore } from "./injectionState";
 
 const { tip = undefined, options } = defineProps<{
   /** 提示 */

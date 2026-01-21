@@ -45,8 +45,8 @@ import {
 import { shallowRef, watch } from "vue";
 import { SketchPicker } from "vue-color";
 
+import { useBridgeStore } from "../injectionState";
 import Button from "./Button.vue";
-import { useBridgeStore } from "./injectionState";
 
 const {
   icon,
