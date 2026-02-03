@@ -1,4 +1,12 @@
 <template>
+  <Resizable v-model:width="testWidth" v-model:height="testHeight">
+    <div
+      class="bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-500 font-bold"
+      :style="{ width: '100%', height: '100%' }"
+    >
+      {{ Math.round(testWidth) }} x {{ Math.round(testHeight) }}
+    </div>
+  </Resizable>
   <div
     v-if="editor"
     :id="id"
@@ -172,7 +180,7 @@
 
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import Image from "@tiptap/extension-image";
+// import Image from "@tiptap/extension-image";
 import { ListItem } from "@tiptap/extension-list";
 import { Color, TextStyle } from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
@@ -194,9 +202,11 @@ import type { RichEditorProps, RichEditorSelectOption } from "./types";
 
 import RichEditorButton from "./components/Button.vue";
 import RichEditorColor from "./components/Color.vue";
+import Resizable from "./components/Resizable.vue";
 import RichEditorSelect from "./components/Select.vue";
 import { createThemeColor } from "./createThemeColor";
 import { useProvideBridgeStore } from "./injectionState";
+import { Image } from "./node/Image";
 import { ImageUpload } from "./node/ImageUpload";
 
 const innerValue = defineModel<string>("modelValue", { default: "" });
@@ -229,6 +239,8 @@ onBeforeUnmount(() => {
  * ====================
  */
 const id = shallowRef(uniqueId("editor_"));
+const testWidth = ref(200);
+const testHeight = ref(150);
 useProvideBridgeStore({ imageUpload, editorId: id.value });
 const themeColor = computed(() => {
   const brand = theme?.brand || "#0052D9";
@@ -554,119 +566,6 @@ function imageUploadChange() {
     display: block;
     width: 100%;
     height: auto;
-  }
-
-  [data-resize-container] {
-    &.ProseMirror-selectednode {
-      [data-resize-wrapper] {
-        border-radius: 3px;
-        outline: 3px solid var(--brand-color);
-      }
-    }
-
-    [data-resize-wrapper] {
-      outline: 3px solid transparent;
-      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-
-      &:hover {
-        outline: 3px solid var(--brand-color);
-        border-radius: 3px;
-
-        [data-resize-handle] {
-          opacity: 1;
-        }
-      }
-    }
-  }
-
-  /* 图片尺寸控制 */
-  [data-resize-handle] {
-    position: absolute;
-    z-index: 10;
-    opacity: 0;
-    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    background: var(--brand-color);
-
-    &:hover {
-      background: var(--brand-color-active);
-    }
-
-    /* Corner handles */
-    &[data-resize-handle="top-left"],
-    &[data-resize-handle="top-right"],
-    &[data-resize-handle="bottom-left"],
-    &[data-resize-handle="bottom-right"] {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      border: 1px solid #fff;
-    }
-
-    &[data-resize-handle="top-left"] {
-      top: -6px !important;
-      left: -6px !important;
-      cursor: nwse-resize;
-    }
-
-    &[data-resize-handle="top-right"] {
-      top: -6px !important;
-      right: -6px !important;
-      cursor: nesw-resize;
-    }
-
-    &[data-resize-handle="bottom-left"] {
-      bottom: -6px !important;
-      left: -6px !important;
-      cursor: nesw-resize;
-    }
-
-    &[data-resize-handle="bottom-right"] {
-      bottom: -6px !important;
-      right: -6px !important;
-      cursor: nwse-resize;
-    }
-
-    /* Edge handles */
-    &[data-resize-handle="top"],
-    &[data-resize-handle="bottom"],
-    &[data-resize-handle="right"],
-    &[data-resize-handle="left"] {
-      border-radius: 999px;
-    }
-
-    &[data-resize-handle="top"],
-    &[data-resize-handle="bottom"] {
-      height: 6px;
-      left: 20% !important;
-      right: 20% !important;
-    }
-
-    &[data-resize-handle="top"] {
-      top: 10px !important;
-      cursor: ns-resize;
-    }
-
-    &[data-resize-handle="bottom"] {
-      bottom: 10px !important;
-      cursor: ns-resize;
-    }
-
-    &[data-resize-handle="left"],
-    &[data-resize-handle="right"] {
-      width: 6px;
-      top: 20% !important;
-      bottom: 20% !important;
-    }
-
-    &[data-resize-handle="left"] {
-      left: 10px !important;
-      cursor: ew-resize;
-    }
-
-    &[data-resize-handle="right"] {
-      right: 10px !important;
-      cursor: ew-resize;
-    }
   }
 }
 </style>

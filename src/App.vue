@@ -28,7 +28,6 @@
   </CeFilterForm>
   <CeRichEditor
     :imageUpload="{
-      request,
       accept: '.png,.jpg,.jpeg',
       sizeLimit: 1024 * 1024,
       minImageSize: 1000,
