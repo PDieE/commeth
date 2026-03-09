@@ -26,13 +26,20 @@
   >
     <input v-model="filterFormData.name" placeholder="服务名称" />
   </CeFilterForm>
-  <CeRichEditor
+  <!-- <CeRichEditor
     :imageUpload="{
+      request: editorRequest,
       accept: '.png,.jpg,.jpeg',
       sizeLimit: 1024 * 1024,
       minImageSize: 1000,
       maxImageSize: 2000,
       imageRatio: [1280, 1707],
+    }"
+  /> -->
+  <CeRichEditor
+    :imageUpload="{
+      request: editorRequest,
+      accept: '.png,.jpg,.jpeg',
     }"
   />
 </template>
@@ -69,6 +76,15 @@ function request(options: {
       clearInterval(interval);
     }
   }, 100);
+}
+
+function editorRequest(options: {
+  onSuccess: (url: string) => void;
+  file: File;
+}) {
+  setTimeout(() => {
+    options.onSuccess(URL.createObjectURL(options.file));
+  }, 1000);
 }
 const filterFormData = ref({ name: "" });
 </script>

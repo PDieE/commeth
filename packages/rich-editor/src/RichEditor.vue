@@ -433,7 +433,7 @@ function onTextColorSelectionUpdate(props: EditorEvents["selectionUpdate"]) {
  *       添加图片
  * ====================
  */
-const imageUploadRef = useTemplateRef("imageUploadRef");
+const imageUploadRef = useTemplateRef<HTMLInputElement>("imageUploadRef");
 /** 添加图片 */
 function addImage() {
   if (!imageUploadRef.value) {

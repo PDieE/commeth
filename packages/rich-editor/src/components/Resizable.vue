@@ -10,7 +10,7 @@
 
       <template v-if="enabled">
         <div
-          v-for="dir in directions"
+          v-for="dir in activeDirections"
           :key="dir"
           :data-resize-handle="dir"
           @pointerdown.stop.prevent="onPointerDown($event, dir)"
@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import { useElementSize } from "@vueuse/core";
 import { computed, ref } from "vue";
 
 const width = defineModel<number | string>("width");
@@ -61,6 +62,30 @@ const emit = defineEmits<{
 }>();
 
 const containerRef = ref<HTMLElement | null>(null);
+const { width: elementWidth, height: elementHeight } =
+  useElementSize(containerRef);
+
+const activeDirections = computed(() => {
+  const parseSize = (val: string | number | undefined, fallback: number) => {
+    if (val === undefined || val === "") return fallback;
+    if (typeof val === "number") return val;
+    const parsed = parseFloat(val as string);
+    return isNaN(parsed) ? fallback : parsed;
+  };
+
+  const w = parseSize(width.value, elementWidth.value ?? Infinity);
+  const h = parseSize(height.value, elementHeight.value ?? Infinity);
+
+  return props.directions.filter((dir) => {
+    if ((dir === "top" || dir === "bottom") && w < 80) {
+      return false;
+    }
+    if ((dir === "left" || dir === "right") && h < 80) {
+      return false;
+    }
+    return true;
+  });
+});
 
 const containerStyle = computed(() => {
   const style: Record<string, string> = {};
