@@ -160,7 +160,7 @@ function getAMap() {
 
   return AMapService.AMap();
 }
-const mapRef = useTemplateRef("mapRef");
+const mapRef = useTemplateRef<HTMLDivElement>("mapRef");
 let map: AMap.Map | undefined;
 /** 渲染地图 */
 async function renderMap() {
