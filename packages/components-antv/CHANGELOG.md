@@ -5,7 +5,6 @@
 ### 🚀 Features
 
 - feat: 新增`ListBottom`组件
-- feat: `JumpLink`组件新增`type`字段，用于指定跳转类型，默认值为`default`
 
 # 0.2.0
 
