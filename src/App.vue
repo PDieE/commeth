@@ -8,6 +8,8 @@
     </a>
   </div>
   <CeJumpLink>跳转链接</CeJumpLink>
+  <CeJumpLink type="circle" />
+  <CeJumpLink type="circle">跳转链接</CeJumpLink>
   <CeAMapSelect defaultAddress="紫琅科技城" />
   <div>
     <CeEnhancedUpload

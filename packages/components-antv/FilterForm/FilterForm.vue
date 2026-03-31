@@ -120,7 +120,7 @@ const columnsNumberMap = computed<[number, number][]>(() => {
     return widthRange;
   });
 });
-const itemsBoxRef = useTemplateRef("itemsBoxRef");
+const itemsBoxRef = useTemplateRef<HTMLDivElement>("itemsBoxRef");
 const formItemWidth = shallowRef(`${itemWidth}px`);
 useResizeObserver(itemsBoxRef, (entries) => {
   const entry = entries[0];
